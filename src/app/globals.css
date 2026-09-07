@@ -83,3 +83,45 @@ main {
   font-family: monospace;
   color: #6b7280;
 }
+.page-state--error {
+  color: #9b1c1c;
+}
+.hint {
+  color: #6b7280;
+  font-size: 0.9em;
+}
+.btnrow {
+  display: flex;
+  gap: 12px;
+}
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-direction: row;
+}
+fieldset {
+  border: 1px solid #d8dee4;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+th,
+td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid #d8dee4;
+}
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+}
+dt {
+  font-weight: 600;
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Gate } from '../../components/Gate';
 import { LocaleToggle } from '../../components/LocaleToggle';
 import { useLocale } from '../../providers/LocaleProvider';
@@ -22,6 +23,9 @@ export default function SellerPage() {
           </div>
         </header>
         <p>{t('seller_home_body')}</p>
+        <p>
+          <Link href="/seller/area">{t('area_page_title')}</Link>
+        </p>
       </main>
     </Gate>
   );

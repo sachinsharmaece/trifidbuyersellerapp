@@ -38,7 +38,7 @@ export default function LoginPage() {
     try {
       const result = await requestOtp(mobile);
       if (!result.accountExists) {
-        router.push('/register');
+        router.push(`/register?mobile=${encodeURIComponent(mobile)}`);
         return;
       }
       setRequestId(result.requestId ?? null);

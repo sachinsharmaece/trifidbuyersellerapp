@@ -66,7 +66,7 @@ describe('LoginPage (counterparty OTP flow)', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: /send code/i }));
 
-    await waitFor(() => expect(push).toHaveBeenCalledWith('/register'));
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/register?mobile=9876543210'));
   });
 
   it('shows the otp_wrong note on an invalid code', async () => {
