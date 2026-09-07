@@ -1,42 +1,43 @@
 # trifid-buyersellerapp
 
-Next.js and TypeScript foundation for TriFid buyer and seller surfaces.
+Next.js and TypeScript. The buyer and seller surfaces for TriFid (and, later, the field associate
+app — `QR-029` is still open on whether that belongs here).
 
-Run `npm install`, copy `.env.example` to `.env.local`, then use `npm run dev`.
+Business rules, the data model, the API contract and every decision behind this code live in the
+SSOT (`trifid-docs` / `trifid-ssot`), not here. **All business logic lives in `trifid-serverapp`**
+(`TD-010`) — this repository never adds a Next.js API route for a business endpoint.
 
-Routes currently include `/`, `/buyer`, and `/seller`. The application contains no business logic or feature implementation.This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Setup
 
-## Getting Started
+```bash
+npm install
+copy .env.example .env
+```
 
-First, run the development server:
+`trifid-serverapp` must be running (`npm run dev` there) before this app can sign anyone in.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). An unregistered mobile number lands on a
+"registration coming soon" placeholder — full registration content is M3.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` / `npm run build` / `npm run start`.
+- `npm run lint` / `npm run format` / `npm run format:check` — ESLint / Prettier.
+- `npm run typecheck` (alias `type-check`).
+- `npm test` — Vitest + React Testing Library.
 
-## Learn More
+## Layout
 
-To learn more about Next.js, take a look at the following resources:
+`src/app` one folder per route (`login`, `register`, `pending`, `buyer`, `seller`) — plain folder
+routes rather than Next.js route groups, so the URL structure stays obvious to read · `src/lib` the
+API client, the copied DTOs and error codes, the EN/हिंदी dictionary, the device fingerprint ·
+`src/providers` `SessionProvider` (counterparty auth) and `LocaleProvider` · `src/components`
+`Gate` (the `ST-10` pending/rejected screen logic) and the locale toggle.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Known gap (`QR-035`):** the session brief's 150 KB gzipped first-load budget is not met — Next.js
+16 / React 19's own shared runtime already gzips to roughly 166 KB before any page code. See
+`QUESTION_REGISTER.md`.

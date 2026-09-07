@@ -27,3 +27,59 @@ main {
   margin: 0 auto;
   padding: 64px 24px;
 }
+.page-state {
+  color: #4b5a68;
+}
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.auth-page {
+  max-width: 360px;
+}
+.auth-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.note {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #eef2f6;
+}
+.note-urgent {
+  background: #fdeaea;
+  color: #9b1c1c;
+}
+.note-wait {
+  background: #fff6e0;
+  color: #7a5c00;
+}
+.locale-toggle {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.locale-toggle__option {
+  padding: 4px 10px;
+  border: 1px solid #d8dee4;
+  background: none;
+  cursor: pointer;
+}
+.locale-toggle__option--active {
+  background: #1261a0;
+  color: white;
+  border-color: #1261a0;
+}
+.dev-hint {
+  font-family: monospace;
+  color: #6b7280;
+}

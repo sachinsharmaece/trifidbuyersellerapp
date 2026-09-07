@@ -10,6 +10,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "husky"
   },
   "dependencies": {
@@ -18,17 +21,32 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-v8": "^5.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
     "lint-staged": "^16.1.5",
     "prettier": "^3.6.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^8.2.2",
+    "vitest": "^5.0.0"
   },
+  "browserslist": [
+    "chrome >= 84",
+    "edge >= 84",
+    "firefox >= 78",
+    "safari >= 14",
+    "ios_saf >= 14",
+    "samsung >= 14"
+  ],
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
