@@ -66,6 +66,25 @@ export const dictionary = {
     'Listings and demand are coming in a later update.',
     'लिस्टिंग और मांग बाद के अपडेट में आएंगी।',
   ],
+  choose_role_title: ['How will you use TriFid?', 'आप ट्राईफिड का उपयोग कैसे करेंगे?'],
+  register_as_buyer: ['I want to buy', 'मुझे खरीदना है'],
+  register_as_seller: ['I want to sell', 'मुझे बेचना है'],
+  reg_buyer_title: ['Buyer registration', 'खरीदार पंजीकरण'],
+  reg_seller_title: ['Seller registration', 'विक्रेता पंजीकरण'],
+  step_of: ['Step {current} of {total}', 'चरण {current} / {total}'],
+  next: ['Next', 'आगे'],
+  submit: ['Submit', 'जमा करें'],
+  reg_success_title: ['Registration submitted', 'पंजीकरण जमा हो गया'],
+  reg_success_body: [
+    'Our team will review your details. Sign in with your mobile number to check your status.',
+    'हमारी टीम आपकी जानकारी की समीक्षा करेगी। स्थिति देखने के लिए अपने मोबाइल नंबर से साइन इन करें।',
+  ],
+  go_to_login: ['Go to sign in', 'साइन इन करें'],
+  area_page_title: ['My area', 'मेरा क्षेत्र'],
+  area_page_hint: [
+    'Set by Purchase staff. Call the sales desk to request a change.',
+    'परचेज़ स्टाफ द्वारा तय किया गया। बदलाव के लिए सेल्स डेस्क को कॉल करें।',
+  ],
 } satisfies Record<string, [string, string]>;
 
 export type DictionaryKey = keyof typeof dictionary;
