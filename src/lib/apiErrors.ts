@@ -12,12 +12,28 @@ export type ErrorCode =
   | 'SESSION_REPLACED'
   | 'ACCOUNT_NOT_ACTIVE'
   | 'ACCOUNT_BLACKLISTED'
+  | 'PERMISSION_DENIED'
   | 'NOT_VISIBLE'
   | 'NOT_FOUND'
   | 'REAUTH_REQUIRED'
   | 'RATE_LIMITED'
   | 'VALIDATION_FAILED'
   | 'INTERNAL_ERROR'
+  // M5 additions — modules/listing, modules/demand, modules/pool,
+  // modules/orders (trifid-serverapp shared/errors.ts).
+  | 'MARGIN_CELL_MISSING'
+  | 'NO_AREA_SET'
+  | 'SHELF_LIFE_FLOOR'
+  | 'PROVENANCE_DELIVERY_MISMATCH'
+  | 'BATCH_REQUIRED'
+  | 'BELOW_MOQ'
+  | 'EXPIRY_REQUIRED'
+  | 'DOUBLE_CONFIRM_REQUIRED'
+  | 'PILE_ALREADY_DECIDED'
+  | 'POOL_CLOSED'
+  | 'ORDER_NOT_DISPATCHABLE'
+  | 'ORDER_NOT_YET_DELIVERABLE'
+  | 'COMPLAINT_WINDOW_CLOSED'
   | 'NETWORK_ERROR'; // client-only: fetch itself failed, no response came back
 
 export class ApiError extends Error {
