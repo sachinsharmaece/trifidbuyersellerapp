@@ -8,6 +8,8 @@ import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../../components/BuyerNav';
 import { RateBlock } from '../../../../components/RateBlock';
 import { Note } from '../../../../components/Note';
+import { Card } from '../../../../components/ui/Card';
+import { Button } from '../../../../components/ui/Button';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
 import { useAsyncData } from '../../../../lib/useAsyncData';
@@ -25,26 +27,31 @@ function OffersContent({ productId }: { productId: string }) {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {(data) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {data.pools.length > 0 && (
             <Note tone="wait">
               {t('has_pool')}{' '}
-              <Link href={`/buyer/pools/${data.pools[0]!.poolId}`}>{t('view')}</Link>
+              <Link
+                className="font-medium underline"
+                href={`/buyer/pools/${data.pools[0]!.poolId}`}
+              >
+                {t('view')}
+              </Link>
             </Note>
           )}
           {data.offers.map((offer) => (
-            <div key={offer.listingLineId} className="card">
+            <Card key={offer.listingLineId}>
               <RateBlock ratePaise={offer.ratePaise} conditions={offer.conditions} />
-              <div className="btnrow">
-                <Link href={`/buyer/buy/${offer.listingLineId}`}>
-                  <button type="button">{t('buy_title')}</button>
-                </Link>
-              </div>
-            </div>
+              <Link href={`/buyer/buy/${offer.listingLineId}`}>
+                <Button fullWidth className="mt-3">
+                  {t('buy_title')}
+                </Button>
+              </Link>
+            </Card>
           ))}
-          <p className="hint">
-            <Link href="/buyer/ask">{t('buy_wait_with_others')}</Link>
-          </p>
+          <Link href="/buyer/ask" className="text-center text-sm text-brand-600 underline">
+            {t('buy_wait_with_others')}
+          </Link>
         </div>
       )}
     </AsyncBoundary>
@@ -57,9 +64,9 @@ export default function ProductOffersPage(props: { params: Promise<{ id: string 
 
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('product_title')}</h1>
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('product_title')}</h1>
           <LocaleToggle />
         </header>
         <OffersContent productId={id} />

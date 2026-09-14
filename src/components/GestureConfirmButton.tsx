@@ -44,7 +44,7 @@ export function GestureConfirmButton({
   return (
     <div
       ref={trackRef}
-      className="gesture-confirm"
+      className="relative touch-pan-y select-none"
       onPointerDown={(e) => {
         if (disabled) return;
         startX.current = e.clientX;
@@ -54,12 +54,15 @@ export function GestureConfirmButton({
       onPointerLeave={reset}
       onPointerCancel={reset}
     >
-      <div className="gesture-confirm__fill" style={{ width: `${dragPct * 100}%` }} />
+      <div
+        className="pointer-events-none absolute inset-0 rounded-md bg-brand-100"
+        style={{ width: `${dragPct * 100}%` }}
+      />
       <button
         type="button"
         disabled={disabled}
         onClick={onConfirm}
-        className="gesture-confirm__button"
+        className="relative w-full rounded-md bg-brand-500 px-4 py-3 text-base font-bold text-white hover:bg-brand-600 disabled:bg-brand-500/50"
       >
         {label}
       </button>

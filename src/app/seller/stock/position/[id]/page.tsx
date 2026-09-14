@@ -5,6 +5,7 @@ import { Gate } from '../../../../../components/Gate';
 import { LocaleToggle } from '../../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../../components/AsyncBoundary';
 import { Pill } from '../../../../../components/Pill';
+import { Card } from '../../../../../components/ui/Card';
 import { formatRupees } from '../../../../../lib/format';
 import { useLocale } from '../../../../../providers/LocaleProvider';
 import { useSession } from '../../../../../providers/SessionProvider';
@@ -24,30 +25,36 @@ function PositionContent({ lineId }: { lineId: string }) {
     <AsyncBoundary state={state} onRetry={retry}>
       {(card) =>
         card.suppressed ? (
-          <p className="hint">{t('position_suppressed')}</p>
+          <Card>
+            <p className="text-sm text-slate-500">{t('position_suppressed')}</p>
+          </Card>
         ) : (
-          <div>
-            <Pill
-              tone={card.gapBand === 'ahead' ? 'good' : card.gapBand === 'behind' ? 'bad' : 'warn'}
-            >
-              {t(
-                card.gapBand === 'ahead'
-                  ? 'position_ahead'
-                  : card.gapBand === 'behind'
-                    ? 'position_behind'
-                    : 'position_competitive',
-              )}
-            </Pill>
-            <p className="hint">
+          <Card>
+            <div className="mb-2">
+              <Pill
+                tone={
+                  card.gapBand === 'ahead' ? 'good' : card.gapBand === 'behind' ? 'bad' : 'warn'
+                }
+              >
+                {t(
+                  card.gapBand === 'ahead'
+                    ? 'position_ahead'
+                    : card.gapBand === 'behind'
+                      ? 'position_behind'
+                      : 'position_competitive',
+                )}
+              </Pill>
+            </div>
+            <p className="mb-1 text-sm text-slate-500">
               #{card.rank} / {card.ofCount}
             </p>
             {card.band && (
-              <p className="hint">
+              <p className="text-sm text-slate-500">
                 {formatRupees(card.band.lowPaise)} – {formatRupees(card.band.highPaise)} (
                 {card.band.listingCount})
               </p>
             )}
-          </div>
+          </Card>
         )
       }
     </AsyncBoundary>
@@ -60,9 +67,9 @@ export default function PositionCardPage(props: { params: Promise<{ id: string }
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('position_card_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('position_card_title')}</h1>
           <LocaleToggle />
         </header>
         <PositionContent lineId={id} />

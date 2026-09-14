@@ -13,12 +13,14 @@ import type { BuyerFeedCard } from '../lib/listingApi';
 export function FeedCard({ card }: { card: BuyerFeedCard }) {
   const { t } = useLocale();
   return (
-    <div className="card">
-      <div className="hint">
+    <div className="transition-shadow hover:shadow-md rounded-lg">
+      <div className="mb-1 px-1 text-sm text-slate-500">
         {card.brand} — {card.technical}
       </div>
       <RateBlock ratePaise={card.lowestRatePaise} conditions={card.conditions} />
-      <div className="hint">{t('feed_offers_count', { count: card.offerCount })}</div>
+      <div className="mt-1 px-1 text-sm text-slate-500">
+        {t('feed_offers_count', { count: card.offerCount })}
+      </div>
     </div>
   );
 }

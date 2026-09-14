@@ -2,10 +2,14 @@
 
 import { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../../components/Gate';
 import { LocaleToggle } from '../../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../../components/AsyncBoundary';
 import { Note } from '../../../../../components/Note';
+import { Card } from '../../../../../components/ui/Card';
+import { Input, Select } from '../../../../../components/ui/Input';
+import { Button } from '../../../../../components/ui/Button';
 import { formatRupees } from '../../../../../lib/format';
 import { useLocale } from '../../../../../providers/LocaleProvider';
 import { useSession } from '../../../../../providers/SessionProvider';
@@ -33,63 +37,66 @@ function PayForm({ soId }: { soId: string }) {
   return (
     <AsyncBoundary state={state} onRetry={retry}>
       {(order) => (
-        <div>
-          <p>
+        <Card>
+          <p className="mb-3 text-lg font-semibold text-slate-900">
             {t('payment_amount_due')}: {formatRupees(order.totalPaise)}
           </p>
           <Note>{t('payment_not_proof_note')}</Note>
 
-          <label>
-            {t('payment_method')}
-            <select
+          <div className="mt-4 flex flex-col gap-4">
+            <Select
+              label={t('payment_method')}
               value={method}
               onChange={(e) => setMethod(e.target.value as PaymentClaimInput['method'])}
             >
               <option value="utr">{t('payment_method_utr')}</option>
               <option value="bank_message">{t('payment_method_bank_message')}</option>
               <option value="screenshot">{t('payment_method_screenshot')}</option>
-            </select>
-          </label>
+            </Select>
 
-          {method === 'utr' && (
-            <label>
-              {t('payment_method_utr')}
-              <input type="text" value={utr} onChange={(e) => setUtr(e.target.value)} />
-            </label>
-          )}
-          {method === 'bank_message' && (
-            <label>
-              {t('payment_method_bank_message')}
-              <input type="text" value={rawText} onChange={(e) => setRawText(e.target.value)} />
-            </label>
-          )}
+            {method === 'utr' && (
+              <Input
+                label={t('payment_method_utr')}
+                value={utr}
+                onChange={(e) => setUtr(e.target.value)}
+              />
+            )}
+            {method === 'bank_message' && (
+              <Input
+                label={t('payment_method_bank_message')}
+                value={rawText}
+                onChange={(e) => setRawText(e.target.value)}
+              />
+            )}
 
-          {error && <Note tone="urgent">{error}</Note>}
+            {error && <Note tone="urgent">{error}</Note>}
 
-          <button
-            type="button"
-            disabled={submitting}
-            onClick={() => {
-              setSubmitting(true);
-              setError(null);
-              callApi((token) =>
-                postPaymentClaim(token, {
-                  amountPaise: order.totalPaise,
-                  method,
-                  utr: method === 'utr' ? utr : undefined,
-                  rawText: method === 'bank_message' ? rawText : undefined,
-                }),
-              )
-                .then(() => router.push(`/buyer/orders/${soId}`))
-                .catch((err: unknown) => {
-                  setError(err instanceof ApiError ? err.message : 'Something went wrong.');
-                  setSubmitting(false);
-                });
-            }}
-          >
-            {t('payment_submit')}
-          </button>
-        </div>
+            <Button
+              fullWidth
+              loading={submitting}
+              icon={<FiSend />}
+              onClick={() => {
+                setSubmitting(true);
+                setError(null);
+                callApi((token) =>
+                  postPaymentClaim(token, {
+                    amountPaise: order.totalPaise,
+                    method,
+                    utr: method === 'utr' ? utr : undefined,
+                    rawText: method === 'bank_message' ? rawText : undefined,
+                  }),
+                )
+                  .then(() => router.push(`/buyer/orders/${soId}`))
+                  .catch((err: unknown) => {
+                    setError(err instanceof ApiError ? err.message : 'Something went wrong.');
+                    setSubmitting(false);
+                  });
+              }}
+            >
+              {t('payment_submit')}
+            </Button>
+          </div>
+        </Card>
       )}
     </AsyncBoundary>
   );
@@ -101,9 +108,9 @@ export default function PayPage(props: { params: Promise<{ id: string }> }) {
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('payment_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('payment_title')}</h1>
           <LocaleToggle />
         </header>
         <PayForm soId={id} />

@@ -7,6 +7,8 @@ import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../components/BuyerNav';
 import { Pill } from '../../../components/Pill';
+import { Card } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -22,41 +24,46 @@ function AskCard({ ask, onChanged }: { ask: MyAskItem; onChanged: () => void }) 
   const liveQuotes = ask.quotes.filter((q) => q.status === 'live');
 
   return (
-    <div className="card">
-      <div className="hint">
-        {t('ask_qty_label')}: {ask.qty}
+    <Card>
+      <div className="mb-2 flex items-center justify-between">
+        <span className="text-sm text-slate-500">
+          {t('ask_qty_label')}: {ask.qty}
+        </span>
+        <Pill>{ask.state}</Pill>
       </div>
-      <Pill>{ask.state}</Pill>
-      {liveQuotes.map((quote) => (
-        <div key={quote.quoteId} className="rate-block">
-          <div className="rate-block__rate">
-            {quote.ratePaiseForIndore !== undefined
-              ? formatRupees(quote.ratePaiseForIndore)
-              : t('loading')}
+      <div className="flex flex-col gap-2">
+        {liveQuotes.map((quote) => (
+          <div key={quote.quoteId} className="rounded-md border border-slate-200 p-3">
+            <div className="text-lg font-bold text-slate-900">
+              {quote.ratePaiseForIndore !== undefined
+                ? formatRupees(quote.ratePaiseForIndore)
+                : t('loading')}
+            </div>
+            <div className="mb-2 text-sm text-slate-500">
+              {quote.qtyAvailable} {t('boxes_unit')}
+            </div>
+            <label className="flex items-center gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                className="h-4 w-4 rounded border-slate-300"
+                checked={picked.includes(quote.quoteId)}
+                onChange={(e) =>
+                  setPicked((prev) =>
+                    e.target.checked
+                      ? [...prev, quote.quoteId]
+                      : prev.filter((id) => id !== quote.quoteId),
+                  )
+                }
+              />
+              {t('quote_accept')}
+            </label>
           </div>
-          <div className="hint">
-            {quote.qtyAvailable} {t('boxes_unit')}
-          </div>
-          <label className="checkbox-row">
-            <input
-              type="checkbox"
-              checked={picked.includes(quote.quoteId)}
-              onChange={(e) =>
-                setPicked((prev) =>
-                  e.target.checked
-                    ? [...prev, quote.quoteId]
-                    : prev.filter((id) => id !== quote.quoteId),
-                )
-              }
-            />
-            {t('quote_accept')}
-          </label>
-        </div>
-      ))}
+        ))}
+      </div>
       {liveQuotes.length > 0 && (
-        <div className="btnrow">
-          <button
-            type="button"
+        <div className="mt-3 flex gap-3">
+          <Button
+            fullWidth
             disabled={picked.length === 0}
             onClick={() =>
               void callApi((token) =>
@@ -73,18 +80,18 @@ function AskCard({ ask, onChanged }: { ask: MyAskItem; onChanged: () => void }) 
             }
           >
             {t('confirm')}
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="secondary"
             onClick={() =>
               void callApi((token) => postDeclineAsk(token, ask.askId)).then(onChanged)
             }
           >
             {t('quote_walk_away')}
-          </button>
+          </Button>
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -100,7 +107,7 @@ function AsksContent() {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {(asks) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {asks.map((ask) => (
             <AskCard key={ask.askId} ask={ask} onChanged={retry} />
           ))}
@@ -114,14 +121,14 @@ export default function MyAsksPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('my_asks_title')}</h1>
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('my_asks_title')}</h1>
           <LocaleToggle />
         </header>
-        <p>
-          <Link href="/buyer/ask">{t('ask_raise_title')}</Link>
-        </p>
+        <Link href="/buyer/ask" className="mb-4 inline-block text-sm text-brand-600 underline">
+          {t('ask_raise_title')}
+        </Link>
         <AsksContent />
         <BuyerNav />
       </main>

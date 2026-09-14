@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '../providers/SessionProvider';
 import { useLocale } from '../providers/LocaleProvider';
+import { Loader } from './ui/Loader';
 
 /**
  * ST-10 — the pending/rejected gate. No rate, listing or order screen is
@@ -27,8 +28,8 @@ export function Gate({ children }: { children: ReactNode }) {
 
   if (status === 'loading') {
     return (
-      <main className="page-state">
-        <p>{t('loading')}</p>
+      <main className="flex min-h-screen items-center justify-center">
+        <Loader label={t('loading')} />
       </main>
     );
   }

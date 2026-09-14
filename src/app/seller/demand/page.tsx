@@ -6,6 +6,8 @@ import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { SellerNav } from '../../../components/SellerNav';
 import { Pill } from '../../../components/Pill';
+import { Card } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
 import { useAsyncData } from '../../../lib/useAsyncData';
@@ -23,15 +25,21 @@ function DemandContent() {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {(asks) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {asks.map((ask) => (
-            <div key={ask.askId} className="card">
-              {ask.headStart && <Pill tone="good">{t('demand_head_start')}</Pill>}
-              <div>{t('demand_qty_needed', { qty: ask.qty })}</div>
+            <Card key={ask.askId}>
+              {ask.headStart && (
+                <div className="mb-2">
+                  <Pill tone="good">{t('demand_head_start')}</Pill>
+                </div>
+              )}
+              <div className="mb-3 text-sm text-slate-700">
+                {t('demand_qty_needed', { qty: ask.qty })}
+              </div>
               <Link href={`/seller/quote/${ask.askId}`}>
-                <button type="button">{t('quote_form_title')}</button>
+                <Button fullWidth>{t('quote_form_title')}</Button>
               </Link>
-            </div>
+            </Card>
           ))}
         </div>
       )}
@@ -43,9 +51,9 @@ export default function DemandBoardPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('demand_board_title')}</h1>
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('demand_board_title')}</h1>
           <LocaleToggle />
         </header>
         <DemandContent />

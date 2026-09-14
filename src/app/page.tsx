@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '../providers/SessionProvider';
 import { useLocale } from '../providers/LocaleProvider';
 import { routeForMe } from '../lib/routeForMe';
+import { Loader } from '../components/ui/Loader';
 
 export default function Home() {
   const { status, me } = useSession();
@@ -20,8 +21,8 @@ export default function Home() {
   }, [status, me, router]);
 
   return (
-    <main className="page-state">
-      <p>{t('loading')}</p>
+    <main className="flex min-h-screen items-center justify-center">
+      <Loader label={t('loading')} />
     </main>
   );
 }

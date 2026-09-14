@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Gate } from '../../../../../components/Gate';
 import { LocaleToggle } from '../../../../../components/LocaleToggle';
 import { Note } from '../../../../../components/Note';
+import { Card } from '../../../../../components/ui/Card';
+import { Input } from '../../../../../components/ui/Input';
+import { Button } from '../../../../../components/ui/Button';
 import { useLocale } from '../../../../../providers/LocaleProvider';
 import { useSession } from '../../../../../providers/SessionProvider';
 import { patchListingLineRate } from '../../../../../lib/listingApi';
@@ -43,56 +46,61 @@ export default function RateChangePage(props: { params: Promise<{ id: string }> 
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('rate_change_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('rate_change_title')}</h1>
           <LocaleToggle />
         </header>
 
-        {confirmStage === 'none' && (
-          <div>
-            <label>
-              {t('rate_change_new_rate')}
-              <input
+        <Card>
+          {confirmStage === 'none' && (
+            <div className="flex flex-col gap-4">
+              <Input
+                label={t('rate_change_new_rate')}
                 type="number"
                 value={ratePaise}
                 onChange={(e) => setRatePaise(e.target.value)}
               />
-            </label>
-            {error && <Note tone="urgent">{error}</Note>}
-            <button type="button" disabled={submitting} onClick={() => submit(false)}>
-              {t('save')}
-            </button>
-          </div>
-        )}
-
-        {confirmStage === 'first' && (
-          <div>
-            <Note tone="urgent">{t('rate_change_confirm_1')}</Note>
-            <div className="btnrow">
-              <button type="button" onClick={() => setConfirmStage('second')}>
-                {t('confirm')}
-              </button>
-              <button type="button" onClick={() => setConfirmStage('none')}>
-                {t('cancel')}
-              </button>
+              {error && <Note tone="urgent">{error}</Note>}
+              <Button fullWidth loading={submitting} onClick={() => submit(false)}>
+                {t('save')}
+              </Button>
             </div>
-          </div>
-        )}
+          )}
 
-        {confirmStage === 'second' && (
-          <div>
-            <Note tone="urgent">{t('rate_change_confirm_2')}</Note>
-            <div className="btnrow">
-              <button type="button" disabled={submitting} onClick={() => submit(true)}>
-                {t('confirm')}
-              </button>
-              <button type="button" onClick={() => setConfirmStage('none')}>
-                {t('cancel')}
-              </button>
+          {confirmStage === 'first' && (
+            <div className="flex flex-col gap-4">
+              <Note tone="urgent">{t('rate_change_confirm_1')}</Note>
+              <div className="flex gap-3">
+                <Button fullWidth onClick={() => setConfirmStage('second')}>
+                  {t('confirm')}
+                </Button>
+                <Button variant="secondary" fullWidth onClick={() => setConfirmStage('none')}>
+                  {t('cancel')}
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {confirmStage === 'second' && (
+            <div className="flex flex-col gap-4">
+              <Note tone="urgent">{t('rate_change_confirm_2')}</Note>
+              <div className="flex gap-3">
+                <Button
+                  variant="danger"
+                  fullWidth
+                  loading={submitting}
+                  onClick={() => submit(true)}
+                >
+                  {t('confirm')}
+                </Button>
+                <Button variant="secondary" fullWidth onClick={() => setConfirmStage('none')}>
+                  {t('cancel')}
+                </Button>
+              </div>
+            </div>
+          )}
+        </Card>
       </main>
     </Gate>
   );

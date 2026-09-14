@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { FiArrowLeft } from 'react-icons/fi';
 import { useLocale } from '../../providers/LocaleProvider';
 import { useSession } from '../../providers/SessionProvider';
 import { requestOtp, verifyOtp } from '../../lib/identityApi';
@@ -11,6 +12,9 @@ import { ApiError } from '../../lib/apiErrors';
 import { env } from '../../lib/env';
 import { routeForMe } from '../../lib/routeForMe';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { Card } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
+import { Note } from '../../components/Note';
 
 // The six OTP states from the buyer/seller prototypes (MASTER_PLAN.md §M2
 // frontend scope): phone, otp, otp_wrong, otp_expired, locked, new_device.
@@ -114,84 +118,95 @@ export default function LoginPage() {
 
   if (step === 'locked') {
     return (
-      <main className="auth-page">
-        <LocaleToggle />
-        <p className="note note-urgent">{t('locked_out')}</p>
-        <button type="button" onClick={() => setStep('phone')}>
-          {t('back')}
-        </button>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+        <Card className="w-full max-w-sm">
+          <div className="mb-4 flex justify-center">
+            <LocaleToggle />
+          </div>
+          <Note tone="urgent">{t('locked_out')}</Note>
+          <Button variant="secondary" fullWidth className="mt-4" onClick={() => setStep('phone')}>
+            {t('back')}
+          </Button>
+        </Card>
       </main>
     );
   }
 
   if (step === 'otp') {
     return (
-      <main className="auth-page">
-        <LocaleToggle />
-        <h1>{t('enter_code')}</h1>
-        <form onSubmit={submitOtp}>
-          {otpNote === 'new_device' && <p className="note note-wait">{t('new_device')}</p>}
-          <input
-            inputMode="numeric"
-            maxLength={6}
-            autoFocus
-            value={code}
-            onChange={(event) => setCode(event.target.value)}
-            aria-label={t('enter_code')}
-          />
-          {otpNote === 'otp_wrong' && (
-            <p className="note note-urgent" role="alert">
-              {t('code_wrong')}
-            </p>
-          )}
-          {otpNote === 'otp_expired' && (
-            <p className="note note-urgent" role="alert">
-              {t('code_expired')}
-            </p>
-          )}
-          {genericError && (
-            <p className="note note-urgent" role="alert">
-              {genericError}
-            </p>
-          )}
-          {env.isDevelopment && devCode && <p className="dev-hint">Dev code: {devCode}</p>}
-          <button type="submit" disabled={submitting || code.length !== 6}>
-            {t('verify')}
-          </button>
-          <button type="button" disabled={submitting} onClick={() => void resendCode()}>
-            {t('resend')}
-          </button>
-          <button type="button" onClick={() => setStep('phone')}>
-            {t('back')}
-          </button>
-        </form>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+        <Card className="w-full max-w-sm">
+          <div className="mb-4 flex justify-center">
+            <LocaleToggle />
+          </div>
+          <h1 className="mb-4 text-lg font-semibold text-slate-900">{t('enter_code')}</h1>
+          <form onSubmit={submitOtp} className="flex flex-col gap-3">
+            {otpNote === 'new_device' && <Note tone="wait">{t('new_device')}</Note>}
+            <input
+              inputMode="numeric"
+              maxLength={6}
+              autoFocus
+              value={code}
+              onChange={(event) => setCode(event.target.value)}
+              aria-label={t('enter_code')}
+              className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-center text-lg tracking-widest focus:border-brand-500 focus:outline focus:outline-2 focus:outline-brand-500/30"
+            />
+            {otpNote === 'otp_wrong' && <Note tone="urgent">{t('code_wrong')}</Note>}
+            {otpNote === 'otp_expired' && <Note tone="urgent">{t('code_expired')}</Note>}
+            {genericError && <Note tone="urgent">{genericError}</Note>}
+            {env.isDevelopment && devCode && (
+              <p className="font-mono text-xs text-slate-400">Dev code: {devCode}</p>
+            )}
+            <Button type="submit" fullWidth loading={submitting} disabled={code.length !== 6}>
+              {t('verify')}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              fullWidth
+              disabled={submitting}
+              onClick={() => void resendCode()}
+            >
+              {t('resend')}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              icon={<FiArrowLeft />}
+              onClick={() => setStep('phone')}
+            >
+              {t('back')}
+            </Button>
+          </form>
+        </Card>
       </main>
     );
   }
 
   return (
-    <main className="auth-page">
-      <LocaleToggle />
-      <h1>{t('enter_mobile')}</h1>
-      <form onSubmit={submitPhone}>
-        <input
-          type="tel"
-          inputMode="numeric"
-          maxLength={10}
-          placeholder={t('mobile_placeholder')}
-          value={mobile}
-          onChange={(event) => setMobile(event.target.value)}
-          aria-label={t('enter_mobile')}
-        />
-        {genericError && (
-          <p className="note note-urgent" role="alert">
-            {genericError}
-          </p>
-        )}
-        <button type="submit" disabled={submitting || mobile.length !== 10}>
-          {t('send_code')}
-        </button>
-      </form>
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+      <Card className="w-full max-w-sm">
+        <div className="mb-4 flex justify-center">
+          <LocaleToggle />
+        </div>
+        <h1 className="mb-4 text-lg font-semibold text-slate-900">{t('enter_mobile')}</h1>
+        <form onSubmit={submitPhone} className="flex flex-col gap-3">
+          <input
+            type="tel"
+            inputMode="numeric"
+            maxLength={10}
+            placeholder={t('mobile_placeholder')}
+            value={mobile}
+            onChange={(event) => setMobile(event.target.value)}
+            aria-label={t('enter_mobile')}
+            className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-base focus:border-brand-500 focus:outline focus:outline-2 focus:outline-brand-500/30"
+          />
+          {genericError && <Note tone="urgent">{genericError}</Note>}
+          <Button type="submit" fullWidth loading={submitting} disabled={mobile.length !== 10}>
+            {t('send_code')}
+          </Button>
+        </form>
+      </Card>
     </main>
   );
 }

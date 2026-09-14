@@ -4,6 +4,8 @@ import { useCallback } from 'react';
 import { Gate } from '../../../components/Gate';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { LocaleToggle } from '../../../components/LocaleToggle';
+import { Card } from '../../../components/ui/Card';
+import { Table, Th, Td } from '../../../components/ui/Table';
 import { useAsyncData } from '../../../lib/useAsyncData';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -19,41 +21,45 @@ export default function SellerAreaPage() {
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('area_page_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('area_page_title')}</h1>
           <LocaleToggle />
         </header>
-        <p className="hint">{t('area_page_hint')}</p>
-        <AsyncBoundary
-          state={state}
-          onRetry={retry}
-          emptyMessage="No area set yet — call the sales desk."
-        >
-          {(area) => (
-            <>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Tehsil</th>
-                    <th>District</th>
-                    <th>State</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {area.tehsils.map((tehsil) => (
-                    <tr key={tehsil.tehsilId}>
-                      <td>{tehsil.name}</td>
-                      <td>{tehsil.district}</td>
-                      <td>{tehsil.state}</td>
+        <p className="mb-4 text-sm text-slate-500">{t('area_page_hint')}</p>
+        <Card>
+          <AsyncBoundary
+            state={state}
+            onRetry={retry}
+            emptyMessage="No area set yet — call the sales desk."
+          >
+            {(area) => (
+              <>
+                <Table className="mb-4">
+                  <thead>
+                    <tr>
+                      <Th>Tehsil</Th>
+                      <Th>District</Th>
+                      <Th>State</Th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p>Dispatch cut-off time: {area.dispatchCutoffTime}</p>
-            </>
-          )}
-        </AsyncBoundary>
+                  </thead>
+                  <tbody>
+                    {area.tehsils.map((tehsil) => (
+                      <tr key={tehsil.tehsilId}>
+                        <Td>{tehsil.name}</Td>
+                        <Td>{tehsil.district}</Td>
+                        <Td>{tehsil.state}</Td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                <p className="text-sm text-slate-700">
+                  Dispatch cut-off time: {area.dispatchCutoffTime}
+                </p>
+              </>
+            )}
+          </AsyncBoundary>
+        </Card>
       </main>
     </Gate>
   );

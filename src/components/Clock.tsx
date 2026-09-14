@@ -50,5 +50,5 @@ export function Clock({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remaining <= 0]);
 
-  return <span className="clock">{formatDuration(remaining)}</span>;
+  return <span className="font-semibold tabular-nums">{formatDuration(remaining)}</span>;
 }

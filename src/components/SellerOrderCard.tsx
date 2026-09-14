@@ -24,9 +24,9 @@ const RUNG_KEY: Record<string, DictionaryKey> = {
 export function SellerOrderCard({ order }: { order: SellerPoDto }) {
   const { t } = useLocale();
   return (
-    <div className="card">
-      <strong>{order.poNo}</strong>
-      <div className="hint">{t(RUNG_KEY[order.rung] ?? 'rung_placed')}</div>
+    <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md">
+      <strong className="text-slate-900">{order.poNo}</strong>
+      <div className="mt-1 text-sm text-slate-500">{t(RUNG_KEY[order.rung] ?? 'rung_placed')}</div>
     </div>
   );
 }

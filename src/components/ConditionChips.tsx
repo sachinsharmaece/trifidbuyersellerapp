@@ -31,7 +31,7 @@ const PROVENANCE_KEY: Record<string, DictionaryKey> = {
 export function ConditionChips({ conditions }: { conditions: ConditionSet }) {
   const { t } = useLocale();
   return (
-    <div className="condition-chips">
+    <div className="flex flex-wrap gap-1.5">
       <Pill>{t(EXPIRY_KEY[conditions.expiryBand] ?? 'cond_expiry_over12')}</Pill>
       <Pill>{`${t('cond_moq_label')}: ${conditions.moqBand}`}</Pill>
       <Pill>{t(DELIVERY_KEY[conditions.deliveryBand] ?? 'cond_delivery_2_5d')}</Pill>

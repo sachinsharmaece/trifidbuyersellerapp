@@ -12,6 +12,7 @@ import {
   type ProductOption,
   type SkuOption,
 } from '../lib/catalogApi';
+import { Select } from './ui/Input';
 
 export interface CatalogSelection {
   technical: string;
@@ -106,71 +107,72 @@ export function CatalogPicker({
   }, [technical, manufacturerId, productId, skuId, wantsAllPacks]);
 
   return (
-    <div className="catalog-picker">
-      <label>
-        {t('pick_technical')}
-        <select value={technical} onChange={(e) => setTechnical(e.target.value)}>
-          <option value="">{t('pick_choose')}</option>
-          {technicals.map((tech) => (
-            <option key={tech} value={tech}>
-              {tech}
-            </option>
-          ))}
-        </select>
-      </label>
+    <div className="flex flex-col gap-4">
+      <Select
+        label={t('pick_technical')}
+        value={technical}
+        onChange={(e) => setTechnical(e.target.value)}
+      >
+        <option value="">{t('pick_choose')}</option>
+        {technicals.map((tech) => (
+          <option key={tech} value={tech}>
+            {tech}
+          </option>
+        ))}
+      </Select>
 
       {technical && manufacturers.length > 0 && (
-        <label>
-          {t('pick_company')}
-          <select value={manufacturerId} onChange={(e) => setManufacturerId(e.target.value)}>
-            <option value="">{t('pick_any_company')}</option>
-            {manufacturers.map((m) => (
-              <option key={m.manufacturerId} value={m.manufacturerId}>
-                {m.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label={t('pick_company')}
+          value={manufacturerId}
+          onChange={(e) => setManufacturerId(e.target.value)}
+        >
+          <option value="">{t('pick_any_company')}</option>
+          {manufacturers.map((m) => (
+            <option key={m.manufacturerId} value={m.manufacturerId}>
+              {m.name}
+            </option>
+          ))}
+        </Select>
       )}
 
       {technical && products.length > 0 && (
-        <label>
-          {t('pick_product')}
-          <select value={productId} onChange={(e) => setProductId(e.target.value)}>
-            <option value="">{t('pick_choose')}</option>
-            {products.map((p) => (
-              <option key={p.productId} value={p.productId}>
-                {p.brand}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label={t('pick_product')}
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+        >
+          <option value="">{t('pick_choose')}</option>
+          {products.map((p) => (
+            <option key={p.productId} value={p.productId}>
+              {p.brand}
+            </option>
+          ))}
+        </Select>
       )}
 
       {productId && skus.length > 0 && (
-        <label>
-          {t('pick_pack')}
-          <select
-            value={wantsAllPacks ? 'all' : skuId}
-            onChange={(e) => {
-              if (e.target.value === 'all') {
-                setWantsAllPacks(true);
-                setSkuId('');
-              } else {
-                setWantsAllPacks(false);
-                setSkuId(e.target.value);
-              }
-            }}
-          >
-            <option value="">{t('pick_choose')}</option>
-            {allowAllPacks && <option value="all">{t('pick_all_packs')}</option>}
-            {skus.map((sku) => (
-              <option key={sku.skuId} value={sku.skuId}>
-                {sku.packLabel}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label={t('pick_pack')}
+          value={wantsAllPacks ? 'all' : skuId}
+          onChange={(e) => {
+            if (e.target.value === 'all') {
+              setWantsAllPacks(true);
+              setSkuId('');
+            } else {
+              setWantsAllPacks(false);
+              setSkuId(e.target.value);
+            }
+          }}
+        >
+          <option value="">{t('pick_choose')}</option>
+          {allowAllPacks && <option value="all">{t('pick_all_packs')}</option>}
+          {skus.map((sku) => (
+            <option key={sku.skuId} value={sku.skuId}>
+              {sku.packLabel}
+            </option>
+          ))}
+        </Select>
       )}
     </div>
   );

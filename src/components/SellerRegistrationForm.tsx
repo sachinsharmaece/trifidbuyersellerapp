@@ -2,10 +2,16 @@
 
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { FiArrowLeft, FiArrowRight, FiCheck, FiPlus } from 'react-icons/fi';
 import { registerSeller, type SellerReferenceInput } from '../lib/onboardingApi';
 import { isValidGstin, isValidIfsc } from '../lib/validators';
 import { ApiError } from '../lib/apiErrors';
 import { useLocale } from '../providers/LocaleProvider';
+import { Card } from './ui/Card';
+import { Input } from './ui/Input';
+import { Button } from './ui/Button';
+import { Note } from './Note';
+import { Stepper } from './Stepper';
 
 const NOTICE_VERSION = 'v1';
 const TOTAL_STEPS = 4;
@@ -101,193 +107,204 @@ export function SellerRegistrationForm({ initialMobile, onDone }: SellerRegistra
   }
 
   return (
-    <div className="auth-page">
-      <h1>{t('reg_seller_title')}</h1>
-      <p className="hint">
-        Step {step} of {TOTAL_STEPS}
-      </p>
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+      <Card className="w-full max-w-sm">
+        <h1 className="mb-1 text-lg font-semibold text-slate-900">{t('reg_seller_title')}</h1>
+        <Stepper current={step} total={TOTAL_STEPS} />
 
-      {step === 1 && (
-        <form onSubmit={goNext}>
-          <label htmlFor="s-mobile">Mobile number</label>
-          <input
-            id="s-mobile"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            maxLength={10}
-            required
-          />
-          <label htmlFor="s-firm">Firm name</label>
-          <input id="s-firm" value={firm} onChange={(e) => setFirm(e.target.value)} required />
-          <label htmlFor="s-gstin">GSTIN</label>
-          <input
-            id="s-gstin"
-            value={gstin}
-            onChange={(e) => setGstin(e.target.value.toUpperCase())}
-            maxLength={15}
-            required
-          />
-          <label htmlFor="s-owner">Owner name</label>
-          <input
-            id="s-owner"
-            value={ownerName}
-            onChange={(e) => setOwnerName(e.target.value)}
-            required
-          />
-          <label htmlFor="s-licence">Insecticide licence number</label>
-          <input
-            id="s-licence"
-            value={licenceNo}
-            onChange={(e) => setLicenceNo(e.target.value)}
-            required
-          />
-          {error && (
-            <p className="note-urgent" role="alert">
-              {error}
-            </p>
-          )}
-          <button type="submit">{t('next')}</button>
-        </form>
-      )}
-
-      {step === 2 && (
-        <form onSubmit={goNext}>
-          <p className="hint">{'BR-250 — two or more named referees. No godown video calls.'}</p>
-          {references.map((reference, index) => (
-            <fieldset key={index}>
-              <legend>Reference {index + 1}</legend>
-              <label htmlFor={`ref-firm-${index}`}>Their firm</label>
-              <input
-                id={`ref-firm-${index}`}
-                value={reference.firm}
-                onChange={(e) => updateReference(index, 'firm', e.target.value)}
-                required
-              />
-              <label htmlFor={`ref-phone-${index}`}>Their phone</label>
-              <input
-                id={`ref-phone-${index}`}
-                value={reference.phone}
-                onChange={(e) => updateReference(index, 'phone', e.target.value)}
-                required
-              />
-              <label htmlFor={`ref-rel-${index}`}>Relationship to you</label>
-              <input
-                id={`ref-rel-${index}`}
-                value={reference.relationship}
-                onChange={(e) => updateReference(index, 'relationship', e.target.value)}
-                required
-              />
-              <label htmlFor={`ref-said-${index}`}>What should they tell us about you?</label>
-              <input
-                id={`ref-said-${index}`}
-                value={reference.whatTheySaid}
-                onChange={(e) => updateReference(index, 'whatTheySaid', e.target.value)}
-                required
-              />
-            </fieldset>
-          ))}
-          <button
-            type="button"
-            onClick={() => setReferences((current) => [...current, emptyReference()])}
-          >
-            Add another reference
-          </button>
-          {error && (
-            <p className="note-urgent" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="btnrow">
-            <button type="button" onClick={goBack}>
-              {t('back')}
-            </button>
-            <button type="submit">{t('next')}</button>
-          </div>
-        </form>
-      )}
-
-      {step === 3 && (
-        <form onSubmit={goNext}>
-          <label htmlFor="s-account">Bank account number</label>
-          <input
-            id="s-account"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-            required
-          />
-          <label htmlFor="s-ifsc">IFSC code</label>
-          <input
-            id="s-ifsc"
-            value={ifsc}
-            onChange={(e) => setIfsc(e.target.value.toUpperCase())}
-            maxLength={11}
-            required
-          />
-          <label htmlFor="s-acname">Account holder name</label>
-          <input
-            id="s-acname"
-            value={accountName}
-            onChange={(e) => setAccountName(e.target.value)}
-            required
-          />
-          {error && (
-            <p className="note-urgent" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="btnrow">
-            <button type="button" onClick={goBack}>
-              {t('back')}
-            </button>
-            <button type="submit">{t('next')}</button>
-          </div>
-        </form>
-      )}
-
-      {step === 4 && (
-        <form onSubmit={handleSubmit}>
-          <h2>Review</h2>
-          <dl>
-            <dt>Firm</dt>
-            <dd>{firm}</dd>
-            <dt>GSTIN</dt>
-            <dd>{gstin}</dd>
-            <dt>Mobile</dt>
-            <dd>{mobile}</dd>
-            <dt>References</dt>
-            <dd>{references.length}</dd>
-          </dl>
-          <label className="checkbox-row">
-            <input
-              type="checkbox"
-              checked={termsAccepted}
-              onChange={(e) => setTermsAccepted(e.target.checked)}
+        {step === 1 && (
+          <form onSubmit={goNext} className="flex flex-col gap-4">
+            <Input
+              id="s-mobile"
+              label="Mobile number"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              maxLength={10}
+              required
             />
-            I accept the terms of trade and the consent notice.
-          </label>
-          <label className="checkbox-row">
-            <input
-              type="checkbox"
-              checked={marketingOptIn}
-              onChange={(e) => setMarketingOptIn(e.target.checked)}
+            <Input
+              id="s-firm"
+              label="Firm name"
+              value={firm}
+              onChange={(e) => setFirm(e.target.value)}
+              required
             />
-            Send me offers and updates (optional).
-          </label>
-          {error && (
-            <p className="note-urgent" role="alert">
-              {error}
+            <Input
+              id="s-gstin"
+              label="GSTIN"
+              value={gstin}
+              onChange={(e) => setGstin(e.target.value.toUpperCase())}
+              maxLength={15}
+              required
+            />
+            <Input
+              id="s-owner"
+              label="Owner name"
+              value={ownerName}
+              onChange={(e) => setOwnerName(e.target.value)}
+              required
+            />
+            <Input
+              id="s-licence"
+              label="Insecticide licence number"
+              value={licenceNo}
+              onChange={(e) => setLicenceNo(e.target.value)}
+              required
+            />
+            {error && <Note tone="urgent">{error}</Note>}
+            <Button type="submit" fullWidth icon={<FiArrowRight />}>
+              {t('next')}
+            </Button>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={goNext} className="flex flex-col gap-4">
+            <p className="text-sm text-slate-500">
+              BR-250 — two or more named referees. No godown video calls.
             </p>
-          )}
-          <div className="btnrow">
-            <button type="button" onClick={goBack}>
-              {t('back')}
-            </button>
-            <button type="submit" disabled={!termsAccepted || submitting}>
-              {submitting ? 'Submitting…' : t('submit')}
-            </button>
-          </div>
-        </form>
-      )}
-    </div>
+            {references.map((reference, index) => (
+              <fieldset key={index} className="rounded-md border border-slate-300 p-3">
+                <legend className="px-1 text-sm font-medium text-slate-700">
+                  Reference {index + 1}
+                </legend>
+                <div className="flex flex-col gap-3">
+                  <Input
+                    id={`ref-firm-${index}`}
+                    label="Their firm"
+                    value={reference.firm}
+                    onChange={(e) => updateReference(index, 'firm', e.target.value)}
+                    required
+                  />
+                  <Input
+                    id={`ref-phone-${index}`}
+                    label="Their phone"
+                    value={reference.phone}
+                    onChange={(e) => updateReference(index, 'phone', e.target.value)}
+                    required
+                  />
+                  <Input
+                    id={`ref-rel-${index}`}
+                    label="Relationship to you"
+                    value={reference.relationship}
+                    onChange={(e) => updateReference(index, 'relationship', e.target.value)}
+                    required
+                  />
+                  <Input
+                    id={`ref-said-${index}`}
+                    label="What should they tell us about you?"
+                    value={reference.whatTheySaid}
+                    onChange={(e) => updateReference(index, 'whatTheySaid', e.target.value)}
+                    required
+                  />
+                </div>
+              </fieldset>
+            ))}
+            <Button
+              type="button"
+              variant="secondary"
+              icon={<FiPlus />}
+              onClick={() => setReferences((current) => [...current, emptyReference()])}
+            >
+              Add another reference
+            </Button>
+            {error && <Note tone="urgent">{error}</Note>}
+            <div className="flex gap-3">
+              <Button type="button" variant="secondary" icon={<FiArrowLeft />} onClick={goBack}>
+                {t('back')}
+              </Button>
+              <Button type="submit" fullWidth icon={<FiArrowRight />}>
+                {t('next')}
+              </Button>
+            </div>
+          </form>
+        )}
+
+        {step === 3 && (
+          <form onSubmit={goNext} className="flex flex-col gap-4">
+            <Input
+              id="s-account"
+              label="Bank account number"
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+              required
+            />
+            <Input
+              id="s-ifsc"
+              label="IFSC code"
+              value={ifsc}
+              onChange={(e) => setIfsc(e.target.value.toUpperCase())}
+              maxLength={11}
+              required
+            />
+            <Input
+              id="s-acname"
+              label="Account holder name"
+              value={accountName}
+              onChange={(e) => setAccountName(e.target.value)}
+              required
+            />
+            {error && <Note tone="urgent">{error}</Note>}
+            <div className="flex gap-3">
+              <Button type="button" variant="secondary" icon={<FiArrowLeft />} onClick={goBack}>
+                {t('back')}
+              </Button>
+              <Button type="submit" fullWidth icon={<FiArrowRight />}>
+                {t('next')}
+              </Button>
+            </div>
+          </form>
+        )}
+
+        {step === 4 && (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <h2 className="text-sm font-semibold text-slate-900">Review</h2>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+              <dt className="font-medium text-slate-500">Firm</dt>
+              <dd className="text-slate-900">{firm}</dd>
+              <dt className="font-medium text-slate-500">GSTIN</dt>
+              <dd className="text-slate-900">{gstin}</dd>
+              <dt className="font-medium text-slate-500">Mobile</dt>
+              <dd className="text-slate-900">{mobile}</dd>
+              <dt className="font-medium text-slate-500">References</dt>
+              <dd className="text-slate-900">{references.length}</dd>
+            </dl>
+            <label className="flex items-start gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-4 w-4 rounded border-slate-300"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+              />
+              I accept the terms of trade and the consent notice.
+            </label>
+            <label className="flex items-start gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-4 w-4 rounded border-slate-300"
+                checked={marketingOptIn}
+                onChange={(e) => setMarketingOptIn(e.target.checked)}
+              />
+              Send me offers and updates (optional).
+            </label>
+            {error && <Note tone="urgent">{error}</Note>}
+            <div className="flex gap-3">
+              <Button type="button" variant="secondary" icon={<FiArrowLeft />} onClick={goBack}>
+                {t('back')}
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                loading={submitting}
+                disabled={!termsAccepted}
+                icon={<FiCheck />}
+              >
+                {t('submit')}
+              </Button>
+            </div>
+          </form>
+        )}
+      </Card>
+    </main>
   );
 }
