@@ -21,6 +21,8 @@ interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: unknown;
   accessToken?: string;
+  // API_CONTRACT.md §1 — required on every money-moving/stage-moving POST.
+  idempotencyKey?: string;
 }
 
 /**
@@ -38,6 +40,7 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
       headers: {
         'Content-Type': 'application/json',
         ...(options.accessToken ? { Authorization: `Bearer ${options.accessToken}` } : {}),
+        ...(options.idempotencyKey ? { 'Idempotency-Key': options.idempotencyKey } : {}),
       },
       body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     });

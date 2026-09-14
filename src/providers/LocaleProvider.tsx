@@ -10,7 +10,7 @@ const STORAGE_KEY = 'trifid_locale';
 interface LocaleContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: DictionaryKey) => string;
+  t: (key: DictionaryKey, vars?: Record<string, string | number>) => string;
 }
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -40,7 +40,10 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const t = useCallback((key: DictionaryKey) => translate(locale, key), [locale]);
+  const t = useCallback(
+    (key: DictionaryKey, vars?: Record<string, string | number>) => translate(locale, key, vars),
+    [locale],
+  );
 
   const value = useMemo<LocaleContextValue>(
     () => ({ locale, setLocale, t }),
