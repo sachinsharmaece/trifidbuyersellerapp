@@ -5,6 +5,9 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { Note } from '../../../components/Note';
 import { UndoToast } from '../../../components/UndoToast';
+import { Card } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
+import { Loader } from '../../../components/ui/Loader';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -44,37 +47,42 @@ export default function ClaimBoardPage() {
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('claim_board_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('claim_board_title')}</h1>
           <LocaleToggle />
         </header>
 
         {!enabled && <Note>{t('nothing_yet')}</Note>}
-        {enabled && items === null && <p className="page-state">{t('loading')}</p>}
-        {enabled &&
-          items?.map((item) => (
-            <div key={item.pileId} className="card">
-              <div>{formatRupees(item.ratePaise)}</div>
-              <div className="hint">
-                {item.totalQty} {t('boxes_unit')}
-              </div>
-              <button
-                type="button"
-                onClick={() =>
-                  callApi((token) => postClaim(token, item.pileId)).then((res) => {
-                    setUndo({
-                      claimId: res.claimId,
-                      deadlineIso: new Date(Date.now() + 5000).toISOString(),
-                    });
-                    load();
-                  })
-                }
-              >
-                {t('claim_action')}
-              </button>
-            </div>
-          ))}
+        {enabled && items === null && <Loader label={t('loading')} />}
+        {enabled && (
+          <div className="flex flex-col gap-3">
+            {items?.map((item) => (
+              <Card key={item.pileId}>
+                <div className="text-lg font-bold text-slate-900">
+                  {formatRupees(item.ratePaise)}
+                </div>
+                <div className="mb-3 text-sm text-slate-500">
+                  {item.totalQty} {t('boxes_unit')}
+                </div>
+                <Button
+                  fullWidth
+                  onClick={() =>
+                    callApi((token) => postClaim(token, item.pileId)).then((res) => {
+                      setUndo({
+                        claimId: res.claimId,
+                        deadlineIso: new Date(Date.now() + 5000).toISOString(),
+                      });
+                      load();
+                    })
+                  }
+                >
+                  {t('claim_action')}
+                </Button>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {undo && (
           <UndoToast

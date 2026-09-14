@@ -8,28 +8,28 @@ export function LocaleToggle() {
   const { locale, setLocale } = useLocale();
 
   return (
-    <div className="locale-toggle" role="group" aria-label="Language">
+    <div
+      role="group"
+      aria-label="Language"
+      className="inline-flex gap-1 rounded-md border border-slate-300 p-0.5"
+    >
       <button
         type="button"
         aria-pressed={locale === 'en'}
-        className={
-          locale === 'en'
-            ? 'locale-toggle__option locale-toggle__option--active'
-            : 'locale-toggle__option'
-        }
         onClick={() => setLocale('en')}
+        className={`rounded px-2.5 py-1 text-xs font-medium ${
+          locale === 'en' ? 'bg-brand-500 text-white' : 'text-slate-600'
+        }`}
       >
         EN
       </button>
       <button
         type="button"
         aria-pressed={locale === 'hi'}
-        className={
-          locale === 'hi'
-            ? 'locale-toggle__option locale-toggle__option--active'
-            : 'locale-toggle__option'
-        }
         onClick={() => setLocale('hi')}
+        className={`rounded px-2.5 py-1 text-xs font-medium ${
+          locale === 'hi' ? 'bg-brand-500 text-white' : 'text-slate-600'
+        }`}
       >
         हिंदी
       </button>

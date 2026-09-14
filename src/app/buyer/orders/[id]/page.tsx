@@ -2,12 +2,15 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
+import { FiCheck, FiAlertCircle } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { ProgressLadder } from '../../../../components/ProgressLadder';
 import { Clock } from '../../../../components/Clock';
 import { Note } from '../../../../components/Note';
+import { Card } from '../../../../components/ui/Card';
+import { Button } from '../../../../components/ui/Button';
 import { formatRupees } from '../../../../lib/format';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -46,34 +49,41 @@ function OrderContent({ soId }: { soId: string }) {
   return (
     <AsyncBoundary state={state} onRetry={retry}>
       {([order, documents]) => (
-        <div>
-          <h2>{order.soNo}</h2>
-          <p>{formatRupees(order.totalPaise)}</p>
-          <ProgressLadder rung={order.rung} />
+        <div className="flex flex-col gap-4">
+          <Card>
+            <h2 className="text-lg font-semibold text-slate-900">{order.soNo}</h2>
+            <p className="mb-3 text-xl font-bold text-slate-900">
+              {formatRupees(order.totalPaise)}
+            </p>
+            <ProgressLadder rung={order.rung} />
+          </Card>
 
           {order.canPay && (
-            <div>
+            <Card>
               <Note tone="urgent">
                 <Clock targetIso={order.payDeadline} />
               </Note>
               <Link href={`/buyer/orders/${soId}/pay`}>
-                <button type="button">{t('order_pay_now')}</button>
+                <Button fullWidth className="mt-3">
+                  {t('order_pay_now')}
+                </Button>
               </Link>
-            </div>
+            </Card>
           )}
 
           {order.leg1 && (
-            <p className="hint">
+            <p className="text-sm text-slate-500">
               {t('rung_leg1_dispatch')}: {order.leg1.mode}
             </p>
           )}
 
           {order.canConfirmReceipt && !confirmed && (
-            <div>
-              <p className="hint">{t('order_confirm_receipt_hint')}</p>
-              <div className="btnrow">
-                <button
-                  type="button"
+            <Card>
+              <p className="mb-3 text-sm text-slate-500">{t('order_confirm_receipt_hint')}</p>
+              <div className="flex gap-3">
+                <Button
+                  fullWidth
+                  icon={<FiCheck />}
                   onClick={() =>
                     void callApi((token) => postConfirmReceipt(token, soId)).then(() => {
                       setConfirmed(true);
@@ -82,22 +92,28 @@ function OrderContent({ soId }: { soId: string }) {
                   }
                 >
                   {t('order_confirm_receipt')}
-                </button>
-                <Link href={`/buyer/orders/${soId}/complaint`}>
-                  <button type="button">{t('order_raise_complaint')}</button>
+                </Button>
+                <Link href={`/buyer/orders/${soId}/complaint`} className="flex-1">
+                  <Button fullWidth variant="secondary" icon={<FiAlertCircle />}>
+                    {t('order_raise_complaint')}
+                  </Button>
                 </Link>
               </div>
-            </div>
+            </Card>
           )}
 
-          <h2>{t('order_documents')}</h2>
-          <ul>
-            {documents.map((doc) => (
-              <li key={doc.kind}>
-                {t(DOC_KEY[doc.kind])} — {doc.available ? doc.ref : t('doc_not_available_yet')}
-              </li>
-            ))}
-          </ul>
+          <Card title={t('order_documents')}>
+            <ul className="flex flex-col gap-1.5 text-sm text-slate-700">
+              {documents.map((doc) => (
+                <li key={doc.kind} className="flex justify-between">
+                  <span>{t(DOC_KEY[doc.kind])}</span>
+                  <span className={doc.available ? 'text-slate-900' : 'text-slate-400'}>
+                    {doc.available ? doc.ref : t('doc_not_available_yet')}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Card>
         </div>
       )}
     </AsyncBoundary>
@@ -110,9 +126,9 @@ export default function OrderDetailPage(props: { params: Promise<{ id: string }>
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('orders_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
           <LocaleToggle />
         </header>
         <OrderContent soId={id} />

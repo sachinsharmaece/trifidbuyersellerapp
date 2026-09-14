@@ -23,13 +23,9 @@ function OrdersContent() {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {(orders) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {orders.map((order) => (
-            <Link
-              key={order.poId}
-              href={`/seller/orders/${order.poId}`}
-              style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
-            >
+            <Link key={order.poId} href={`/seller/orders/${order.poId}`}>
               <SellerOrderCard order={order} />
             </Link>
           ))}
@@ -43,9 +39,9 @@ export default function SellerOrdersPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('orders_title')}</h1>
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
           <LocaleToggle />
         </header>
         <OrdersContent />

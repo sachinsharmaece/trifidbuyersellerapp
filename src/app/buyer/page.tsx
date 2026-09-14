@@ -6,6 +6,7 @@ import { LocaleToggle } from '../../components/LocaleToggle';
 import { AsyncBoundary } from '../../components/AsyncBoundary';
 import { BuyerNav } from '../../components/BuyerNav';
 import { FeedCard } from '../../components/FeedCard';
+import { Button } from '../../components/ui/Button';
 import { useLocale } from '../../providers/LocaleProvider';
 import { useSession } from '../../providers/SessionProvider';
 import { useAsyncData } from '../../lib/useAsyncData';
@@ -23,13 +24,9 @@ function FeedContent() {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {(cards) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {cards.map((card) => (
-            <Link
-              key={card.productId}
-              href={`/buyer/product/${card.productId}`}
-              style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
-            >
+            <Link key={card.productId} href={`/buyer/product/${card.productId}`}>
               <FeedCard card={card} />
             </Link>
           ))}
@@ -45,14 +42,14 @@ export default function BuyerPage() {
 
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('feed_title')}</h1>
-          <div className="page-header__actions">
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('feed_title')}</h1>
+          <div className="flex items-center gap-2">
             <LocaleToggle />
-            <button type="button" onClick={() => void logout()}>
+            <Button variant="ghost" size="sm" onClick={() => void logout()}>
               {t('sign_out')}
-            </button>
+            </Button>
           </div>
         </header>
         <FeedContent />

@@ -34,7 +34,7 @@ describe('ConditionChips — the condition-set sweep', () => {
   it.each(permutations)('renders all four tags for %o', (conditions) => {
     setUpLocale();
     const { container } = render(<ConditionChips conditions={conditions} />);
-    const pills = container.querySelectorAll('.pill');
+    const pills = container.querySelectorAll('[data-testid="pill"]');
     // Four required tags — a fifth only appears when expiryExact is set.
     expect(pills.length).toBe(4);
   });
@@ -51,7 +51,7 @@ describe('ConditionChips — the condition-set sweep', () => {
         }}
       />,
     );
-    expect(container.querySelectorAll('.pill').length).toBe(4);
+    expect(container.querySelectorAll('[data-testid="pill"]').length).toBe(4);
 
     rerender(
       <ConditionChips
@@ -64,7 +64,7 @@ describe('ConditionChips — the condition-set sweep', () => {
         }}
       />,
     );
-    expect(container.querySelectorAll('.pill').length).toBe(5);
+    expect(container.querySelectorAll('[data-testid="pill"]').length).toBe(5);
     expect(screen.getByText(/06\/2028/)).toBeInTheDocument();
   });
 });
@@ -84,6 +84,6 @@ describe('RateBlock — a rate never renders without its conditions', () => {
       />,
     );
     expect(screen.getByText('₹414')).toBeInTheDocument();
-    expect(document.querySelectorAll('.pill').length).toBe(4);
+    expect(document.querySelectorAll('[data-testid="pill"]').length).toBe(4);
   });
 });

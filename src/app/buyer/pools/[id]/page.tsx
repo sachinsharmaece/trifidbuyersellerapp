@@ -6,6 +6,9 @@ import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { Clock } from '../../../../components/Clock';
 import { Note } from '../../../../components/Note';
+import { Card } from '../../../../components/ui/Card';
+import { Input, Select } from '../../../../components/ui/Input';
+import { Button } from '../../../../components/ui/Button';
 import { formatRupees } from '../../../../lib/format';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -41,12 +44,16 @@ function PoolContent({ poolId }: { poolId: string }) {
   return (
     <AsyncBoundary state={state} onRetry={retry}>
       {([pool, locations]) => (
-        <div>
-          <p>{t('pool_progress', { committed: pool.bindingQty, moq: pool.moq })}</p>
+        <Card>
+          <p className="mb-3 text-sm text-slate-700">
+            {t('pool_progress', { committed: pool.bindingQty, moq: pool.moq })}
+          </p>
           {pool.myRatePaise !== undefined && (
-            <div className="rate-block">
-              <div className="rate-block__label">{t('pool_your_rate')}</div>
-              <div className="rate-block__rate">{formatRupees(pool.myRatePaise)}</div>
+            <div className="mb-3 rounded-md border border-slate-200 p-3">
+              <div className="text-xs text-slate-500">{t('pool_your_rate')}</div>
+              <div className="text-xl font-bold text-slate-900">
+                {formatRupees(pool.myRatePaise)}
+              </div>
             </div>
           )}
 
@@ -57,69 +64,68 @@ function PoolContent({ poolId }: { poolId: string }) {
           )}
 
           {pool.myCommitment ? (
-            <div>
+            <div className="mt-3">
               {!pool.myCommitment.isBinding && pool.status === 'reconfirm' && (
-                <div>
+                <div className="flex flex-col gap-3">
                   <Note tone="wait">{t('pool_reconfirm_needed')}</Note>
-                  <p className="hint">{t('pool_binding_notice')}</p>
-                  <div className="btnrow">
-                    <button
-                      type="button"
+                  <p className="text-sm text-slate-500">{t('pool_binding_notice')}</p>
+                  <div className="flex gap-3">
+                    <Button
+                      fullWidth
                       onClick={() =>
                         void callApi((token) => postReconfirm(token, poolId)).then(retry)
                       }
                     >
                       {t('pool_reconfirm')}
-                    </button>
-                    <button
-                      type="button"
+                    </Button>
+                    <Button
+                      variant="secondary"
                       onClick={() =>
                         void callApi((token) => postWithdraw(token, poolId)).then(retry)
                       }
                     >
                       {t('pool_withdraw')}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
               {!pool.myCommitment.isBinding && pool.status === 'open' && (
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
                   onClick={() => void callApi((token) => postWithdraw(token, poolId)).then(retry)}
                 >
                   {t('pool_withdraw')}
-                </button>
+                </Button>
               )}
             </div>
           ) : (
-            <div>
+            <div className="mt-3 flex flex-col gap-3">
               {locations.length === 0 ? (
                 <Note tone="urgent">{t('buy_no_locations')}</Note>
               ) : (
                 <>
-                  <label>
-                    {t('buy_qty_label')}
-                    <input
-                      type="number"
-                      min={1}
-                      value={qty}
-                      onChange={(e) => setQty(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    {t('buy_delivery_location')}
-                    <select value={locationId} onChange={(e) => setLocationId(e.target.value)}>
-                      <option value="">{t('pick_choose')}</option>
-                      {locations.map((loc) => (
-                        <option key={loc.locationId} value={loc.locationId}>
-                          {loc.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <Input
+                    label={t('buy_qty_label')}
+                    type="number"
+                    min={1}
+                    value={qty}
+                    onChange={(e) => setQty(e.target.value)}
+                  />
+                  <Select
+                    label={t('buy_delivery_location')}
+                    value={locationId}
+                    onChange={(e) => setLocationId(e.target.value)}
+                  >
+                    <option value="">{t('pick_choose')}</option>
+                    {locations.map((loc) => (
+                      <option key={loc.locationId} value={loc.locationId}>
+                        {loc.label}
+                      </option>
+                    ))}
+                  </Select>
                   {error && <Note tone="urgent">{error}</Note>}
-                  <button
-                    type="button"
+                  <Button
+                    fullWidth
                     onClick={() => {
                       const qtyNum = Number(qty);
                       if (!qtyNum || !locationId) return;
@@ -139,12 +145,12 @@ function PoolContent({ poolId }: { poolId: string }) {
                     }}
                   >
                     {t('pool_join')}
-                  </button>
+                  </Button>
                 </>
               )}
             </div>
           )}
-        </div>
+        </Card>
       )}
     </AsyncBoundary>
   );
@@ -156,9 +162,9 @@ export default function PoolPage(props: { params: Promise<{ id: string }> }) {
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('pools_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('pools_title')}</h1>
           <LocaleToggle />
         </header>
         <PoolContent poolId={id} />

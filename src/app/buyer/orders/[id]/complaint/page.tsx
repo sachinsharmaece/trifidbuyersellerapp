@@ -2,9 +2,13 @@
 
 import { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../../components/Gate';
 import { LocaleToggle } from '../../../../../components/LocaleToggle';
 import { Note } from '../../../../../components/Note';
+import { Card } from '../../../../../components/ui/Card';
+import { Select, Textarea } from '../../../../../components/ui/Input';
+import { Button } from '../../../../../components/ui/Button';
 import { useLocale } from '../../../../../providers/LocaleProvider';
 import { useSession } from '../../../../../providers/SessionProvider';
 import {
@@ -33,40 +37,45 @@ function ComplaintForm({ soId }: { soId: string }) {
   const [submitting, setSubmitting] = useState(false);
 
   return (
-    <div>
+    <Card>
       <Note tone="urgent">{t('complaint_stops_clock')}</Note>
-      <label>
-        {t('complaint_category_label')}
-        <select value={category} onChange={(e) => setCategory(e.target.value as ComplaintCategory)}>
+      <div className="mt-4 flex flex-col gap-4">
+        <Select
+          label={t('complaint_category_label')}
+          value={category}
+          onChange={(e) => setCategory(e.target.value as ComplaintCategory)}
+        >
           {COMPLAINT_CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>
               {t(CATEGORY_KEY[cat])}
             </option>
           ))}
-        </select>
-      </label>
-      <label>
-        {t('complaint_note_label')}
-        <textarea value={note} onChange={(e) => setNote(e.target.value)} />
-      </label>
-      {error && <Note tone="urgent">{error}</Note>}
-      <button
-        type="button"
-        disabled={submitting}
-        onClick={() => {
-          setSubmitting(true);
-          setError(null);
-          callApi((token) => postComplaint(token, soId, { category, note: note || undefined }))
-            .then(() => router.push(`/buyer/orders/${soId}`))
-            .catch((err: unknown) => {
-              setError(err instanceof ApiError ? err.message : 'Something went wrong.');
-              setSubmitting(false);
-            });
-        }}
-      >
-        {t('complaint_submit')}
-      </button>
-    </div>
+        </Select>
+        <Textarea
+          label={t('complaint_note_label')}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+        {error && <Note tone="urgent">{error}</Note>}
+        <Button
+          fullWidth
+          loading={submitting}
+          icon={<FiSend />}
+          onClick={() => {
+            setSubmitting(true);
+            setError(null);
+            callApi((token) => postComplaint(token, soId, { category, note: note || undefined }))
+              .then(() => router.push(`/buyer/orders/${soId}`))
+              .catch((err: unknown) => {
+                setError(err instanceof ApiError ? err.message : 'Something went wrong.');
+                setSubmitting(false);
+              });
+          }}
+        >
+          {t('complaint_submit')}
+        </Button>
+      </div>
+    </Card>
   );
 }
 
@@ -76,9 +85,9 @@ export default function ComplaintPage(props: { params: Promise<{ id: string }> }
 
   return (
     <Gate>
-      <main>
-        <header className="page-header">
-          <h1>{t('complaint_title')}</h1>
+      <main className="mx-auto max-w-lg p-4">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('complaint_title')}</h1>
           <LocaleToggle />
         </header>
         <ComplaintForm soId={id} />

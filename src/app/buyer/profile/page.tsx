@@ -5,6 +5,8 @@ import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../components/BuyerNav';
 import { Note } from '../../../components/Note';
+import { Card } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -30,49 +32,54 @@ function ProfileSections() {
   );
 
   return (
-    <div>
-      <dl>
-        <dt>{t('profile_mobile')}</dt>
-        <dd>{me?.mobile}</dd>
-      </dl>
+    <div className="flex flex-col gap-4">
+      <Card>
+        <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+          <dt className="font-medium text-slate-500">{t('profile_mobile')}</dt>
+          <dd className="text-slate-900">{me?.mobile}</dd>
+        </dl>
+      </Card>
 
       <AsyncBoundary state={state} onRetry={retry}>
         {([conduct, locations, refunds]) => (
-          <div>
-            <h2>{t('conduct_title')}</h2>
-            <p>
-              {t('conduct_rate_views')}: {conduct.rateViews} / {conduct.rateViewThreshold}
-            </p>
-            <p className="hint">{t('conduct_no_strikes_yet')}</p>
+          <>
+            <Card title={t('conduct_title')}>
+              <p className="mb-1 text-sm text-slate-700">
+                {t('conduct_rate_views')}: {conduct.rateViews} / {conduct.rateViewThreshold}
+              </p>
+              <p className="text-sm text-slate-500">{t('conduct_no_strikes_yet')}</p>
+            </Card>
 
-            <h2>{t('delivery_locations_title')}</h2>
-            <p className="hint">{t('delivery_locations_hint')}</p>
-            <ul>
-              {locations.map((loc) => (
-                <li key={loc.locationId}>
-                  {loc.label} — {loc.address}
-                </li>
-              ))}
-            </ul>
+            <Card title={t('delivery_locations_title')}>
+              <p className="mb-3 text-sm text-slate-500">{t('delivery_locations_hint')}</p>
+              <ul className="flex flex-col gap-1.5 text-sm text-slate-700">
+                {locations.map((loc) => (
+                  <li key={loc.locationId}>
+                    {loc.label} — {loc.address}
+                  </li>
+                ))}
+              </ul>
+            </Card>
 
             {refunds.length > 0 && (
-              <>
-                <h2>{t('refunds_title')}</h2>
-                <ul>
+              <Card title={t('refunds_title')}>
+                <ul className="flex flex-col gap-1.5 text-sm text-slate-700">
                   {refunds.map((r) => (
-                    <li key={r.refundId}>
-                      {formatRupees(r.amountPaise)} — {r.state}
+                    <li key={r.refundId} className="flex justify-between">
+                      <span>{formatRupees(r.amountPaise)}</span>
+                      <span className="text-slate-500">{r.state}</span>
                     </li>
                   ))}
                 </ul>
-              </>
+              </Card>
             )}
-          </div>
+          </>
         )}
       </AsyncBoundary>
 
-      <h2>{t('help_title')}</h2>
-      <Note>{t('help_call_desk_body')}</Note>
+      <Card title={t('help_title')}>
+        <Note>{t('help_call_desk_body')}</Note>
+      </Card>
     </div>
   );
 }
@@ -83,14 +90,14 @@ export default function BuyerProfilePage() {
 
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('profile_title')}</h1>
-          <div className="page-header__actions">
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('profile_title')}</h1>
+          <div className="flex items-center gap-2">
             <LocaleToggle />
-            <button type="button" onClick={() => void logout()}>
+            <Button variant="ghost" size="sm" onClick={() => void logout()}>
               {t('sign_out')}
-            </button>
+            </Button>
           </div>
         </header>
         <ProfileSections />

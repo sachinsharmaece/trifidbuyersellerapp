@@ -6,6 +6,8 @@ import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { SellerNav } from '../../../components/SellerNav';
 import { Pill } from '../../../components/Pill';
+import { Card } from '../../../components/ui/Card';
+import { Button } from '../../../components/ui/Button';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -36,41 +38,51 @@ function StockContent() {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {([lines, pools]) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {lines.map((line) => {
             const pool = pools.find((p) => p.skuId === line.skuId);
             return (
-              <div key={line.listingLineId} className="card">
-                <div className="page-header">
-                  <strong>{line.packLabel}</strong>
+              <Card key={line.listingLineId}>
+                <div className="mb-1 flex items-center justify-between">
+                  <strong className="text-slate-900">{line.packLabel}</strong>
                   <Pill tone={line.state === 'live' ? 'good' : 'neutral'}>{line.state}</Pill>
                 </div>
-                <div>{formatRupees(line.ratePaise)}</div>
-                <div className="hint">{t('stock_days_left', { days: line.daysRemaining })}</div>
+                <div className="text-lg font-bold text-slate-900">
+                  {formatRupees(line.ratePaise)}
+                </div>
+                <div className="mb-2 text-sm text-slate-500">
+                  {t('stock_days_left', { days: line.daysRemaining })}
+                </div>
                 {pool && (
-                  <p className="hint">
+                  <p className="mb-2 text-sm text-slate-500">
                     {t('pool_progress', { committed: pool.bindingQty, moq: pool.moq })}
                   </p>
                 )}
-                <div className="btnrow">
+                <div className="flex flex-wrap gap-2">
                   <Link href={`/seller/stock/position/${line.listingLineId}`}>
-                    <button type="button">{t('position_card_title')}</button>
+                    <Button variant="secondary" size="sm">
+                      {t('position_card_title')}
+                    </Button>
                   </Link>
                   <Link href={`/seller/stock/rate/${line.listingLineId}`}>
-                    <button type="button">{t('rate_change_title')}</button>
+                    <Button variant="secondary" size="sm">
+                      {t('rate_change_title')}
+                    </Button>
                   </Link>
                   {line.state === 'live' ? (
-                    <button
-                      type="button"
+                    <Button
+                      variant="secondary"
+                      size="sm"
                       onClick={() =>
                         void callApi((token) => postPauseListing(token, line.listingId)).then(retry)
                       }
                     >
                       {t('stock_pause')}
-                    </button>
+                    </Button>
                   ) : (
-                    <button
-                      type="button"
+                    <Button
+                      variant="secondary"
+                      size="sm"
                       onClick={() =>
                         void callApi((token) => postRelistListing(token, line.listingId)).then(
                           retry,
@@ -78,10 +90,10 @@ function StockContent() {
                       }
                     >
                       {t('stock_relist')}
-                    </button>
+                    </Button>
                   )}
                 </div>
-              </div>
+              </Card>
             );
           })}
         </div>
@@ -94,14 +106,17 @@ export default function MyStockPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('my_stock_title')}</h1>
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('my_stock_title')}</h1>
           <LocaleToggle />
         </header>
-        <p>
-          <Link href="/seller/listing/create">{t('create_listing_title')}</Link>
-        </p>
+        <Link
+          href="/seller/listing/create"
+          className="mb-4 inline-block text-sm text-brand-600 underline"
+        >
+          {t('create_listing_title')}
+        </Link>
         <StockContent />
         <SellerNav />
       </main>

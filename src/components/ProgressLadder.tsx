@@ -1,3 +1,4 @@
+import { FiCheckCircle, FiCircle, FiAlertCircle } from 'react-icons/fi';
 import { useLocale } from '../providers/LocaleProvider';
 import type { DictionaryKey } from '../lib/i18n';
 import { ORDER_RUNGS, type OrderRung } from '../lib/ordersApi';
@@ -28,32 +29,43 @@ export function ProgressLadder({ rung }: { rung: OrderRung }) {
 
   if (rung === 'stopped') {
     return (
-      <ol className="progress-ladder" aria-label={t('rung_stopped')}>
-        <li className="progress-ladder__rung progress-ladder__rung--stopped">
-          {t('rung_stopped')}
-        </li>
-      </ol>
+      <div
+        aria-label={t('rung_stopped')}
+        className="flex items-center gap-2 rounded-md bg-danger-50 px-3 py-2 text-sm font-medium text-danger-600"
+      >
+        <FiAlertCircle aria-hidden />
+        {t('rung_stopped')}
+      </div>
     );
   }
 
   const currentIndex = NORMAL_RUNGS.indexOf(rung);
   return (
-    <ol className="progress-ladder">
-      {NORMAL_RUNGS.map((step, index) => (
-        <li
-          key={step}
-          className={
-            index < currentIndex
-              ? 'progress-ladder__rung progress-ladder__rung--done'
-              : index === currentIndex
-                ? 'progress-ladder__rung progress-ladder__rung--current'
-                : 'progress-ladder__rung'
-          }
-          aria-current={index === currentIndex ? 'step' : undefined}
-        >
-          {t(RUNG_KEY[step])}
-        </li>
-      ))}
+    <ol className="flex flex-col gap-1 border-l-2 border-slate-200 pl-3">
+      {NORMAL_RUNGS.map((step, index) => {
+        const done = index < currentIndex;
+        const current = index === currentIndex;
+        return (
+          <li
+            key={step}
+            aria-current={current ? 'step' : undefined}
+            className={`flex items-center gap-2 py-0.5 text-sm ${
+              done
+                ? 'text-success-600'
+                : current
+                  ? 'font-semibold text-brand-600'
+                  : 'text-slate-400'
+            }`}
+          >
+            {done ? (
+              <FiCheckCircle aria-hidden />
+            ) : (
+              <FiCircle aria-hidden className={current ? 'text-brand-500' : ''} />
+            )}
+            {t(RUNG_KEY[step])}
+          </li>
+        );
+      })}
     </ol>
   );
 }

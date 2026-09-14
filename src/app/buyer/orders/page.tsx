@@ -36,19 +36,19 @@ function OrdersContent() {
   return (
     <AsyncBoundary state={state} onRetry={retry} emptyMessage={t('nothing_yet')}>
       {(orders) => (
-        <div>
+        <div className="flex flex-col gap-3">
           {orders.map((order) => (
-            <Link
-              key={order.soId}
-              href={`/buyer/orders/${order.soId}`}
-              style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
-            >
-              <div className="card">
-                <div className="page-header">
-                  <strong>{order.soNo}</strong>
-                  <span>{formatRupees(order.totalPaise)}</span>
+            <Link key={order.soId} href={`/buyer/orders/${order.soId}`}>
+              <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md">
+                <div className="flex items-center justify-between">
+                  <strong className="text-slate-900">{order.soNo}</strong>
+                  <span className="font-semibold text-slate-900">
+                    {formatRupees(order.totalPaise)}
+                  </span>
                 </div>
-                <div className="hint">{t(RUNG_KEY[order.rung] ?? 'rung_placed')}</div>
+                <div className="mt-1 text-sm text-slate-500">
+                  {t(RUNG_KEY[order.rung] ?? 'rung_placed')}
+                </div>
               </div>
             </Link>
           ))}
@@ -62,9 +62,9 @@ export default function BuyerOrdersPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="with-bottom-nav">
-        <header className="page-header">
-          <h1>{t('orders_title')}</h1>
+      <main className="mx-auto max-w-lg p-4 pb-20">
+        <header className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
           <LocaleToggle />
         </header>
         <OrdersContent />

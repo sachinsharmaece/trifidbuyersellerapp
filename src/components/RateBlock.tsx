@@ -16,9 +16,9 @@ export function RateBlock({
   label?: string;
 }) {
   return (
-    <div className="rate-block">
-      {label && <div className="rate-block__label">{label}</div>}
-      <div className="rate-block__rate">{formatRupees(ratePaise)}</div>
+    <div className="rounded-md border border-slate-200 bg-white p-3">
+      {label && <div className="text-xs text-slate-500">{label}</div>}
+      <div className="mb-1.5 text-xl font-bold text-slate-900">{formatRupees(ratePaise)}</div>
       <ConditionChips conditions={conditions} />
     </div>
   );
