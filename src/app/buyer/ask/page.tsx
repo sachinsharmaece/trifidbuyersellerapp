@@ -6,6 +6,7 @@ import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { CatalogPicker, type CatalogSelection } from '../../../components/CatalogPicker';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { Input, Select } from '../../../components/ui/Input';
 import { Button } from '../../../components/ui/Button';
@@ -33,6 +34,7 @@ export default function RaiseAskPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('ask_raise_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_ask" />
         <div className="flex flex-col gap-4">
           <Note>{t('ask_no_price_note')}</Note>
 

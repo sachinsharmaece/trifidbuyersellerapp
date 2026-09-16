@@ -6,6 +6,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { SellerNav } from '../../../components/SellerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { UndoToast } from '../../../components/UndoToast';
 import { Card } from '../../../components/ui/Card';
@@ -173,6 +174,7 @@ export default function ConfirmationsPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('confirmations_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="seller_confirmations" />
         <ConfirmationsContent />
         <SellerNav />
       </main>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { UndoToast } from '../../../components/UndoToast';
 import { Card } from '../../../components/ui/Card';
@@ -53,6 +54,7 @@ export default function ClaimBoardPage() {
           <LocaleToggle />
         </header>
 
+        <DevNote screen="seller_claims" />
         {!enabled && <Note>{t('nothing_yet')}</Note>}
         {enabled && items === null && <Loader label={t('loading')} />}
         {enabled && (

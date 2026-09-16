@@ -5,6 +5,7 @@ import { FiCheckCircle } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
+import { DevNote } from '../../../../components/dev/DevNote';
 import { RateBlock } from '../../../../components/RateBlock';
 import { GestureConfirmButton } from '../../../../components/GestureConfirmButton';
 import { Note } from '../../../../components/Note';
@@ -127,6 +128,7 @@ export default function BuyPage(props: { params: Promise<{ id: string }> }) {
           <h1 className="text-xl font-semibold text-slate-900">{t('buy_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_buy" />
         <BuyForm lineId={id} />
       </main>
     </Gate>

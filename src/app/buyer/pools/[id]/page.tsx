@@ -5,6 +5,7 @@ import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { Clock } from '../../../../components/Clock';
+import { DevNote } from '../../../../components/dev/DevNote';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
 import { Input, Select } from '../../../../components/ui/Input';
@@ -167,6 +168,7 @@ export default function PoolPage(props: { params: Promise<{ id: string }> }) {
           <h1 className="text-xl font-semibold text-slate-900">{t('pools_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_pools" />
         <PoolContent poolId={id} />
       </main>
     </Gate>

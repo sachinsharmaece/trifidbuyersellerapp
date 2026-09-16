@@ -6,6 +6,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../components/BuyerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Pill } from '../../../components/Pill';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
@@ -126,6 +127,7 @@ export default function MyAsksPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('my_asks_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_my_asks" />
         <Link href="/buyer/ask" className="mb-4 inline-block text-sm text-brand-600 underline">
           {t('ask_raise_title')}
         </Link>

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { FiCheckCircle } from 'react-icons/fi';
 import { useLocale } from '../../providers/LocaleProvider';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { DevNote } from '../../components/dev/DevNote';
 import { BuyerRegistrationForm } from '../../components/BuyerRegistrationForm';
 import { SellerRegistrationForm } from '../../components/SellerRegistrationForm';
 import { Card } from '../../components/ui/Card';
@@ -53,6 +54,7 @@ function RegisterContent() {
           <LocaleToggle />
         </div>
         <h1 className="mb-4 text-lg font-semibold text-slate-900">{t('choose_role_title')}</h1>
+        <DevNote screen="registration" />
         <div className="flex flex-col gap-3">
           <Button fullWidth onClick={() => setRole('buyer')}>
             {t('register_as_buyer')}

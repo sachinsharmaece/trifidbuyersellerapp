@@ -4,6 +4,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../components/BuyerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
@@ -100,6 +101,7 @@ export default function BuyerProfilePage() {
             </Button>
           </div>
         </header>
+        <DevNote screen="buyer_profile" />
         <ProfileSections />
         <BuyerNav />
       </main>

@@ -4,6 +4,7 @@ import { use } from 'react';
 import { Gate } from '../../../../../components/Gate';
 import { LocaleToggle } from '../../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../../components/AsyncBoundary';
+import { DevNote } from '../../../../../components/dev/DevNote';
 import { Pill } from '../../../../../components/Pill';
 import { Card } from '../../../../../components/ui/Card';
 import { formatRupees } from '../../../../../lib/format';
@@ -72,6 +73,7 @@ export default function PositionCardPage(props: { params: Promise<{ id: string }
           <h1 className="text-xl font-semibold text-slate-900">{t('position_card_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="seller_position" />
         <PositionContent lineId={id} />
       </main>
     </Gate>

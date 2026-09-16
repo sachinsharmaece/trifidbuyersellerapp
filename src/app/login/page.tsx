@@ -12,6 +12,7 @@ import { ApiError } from '../../lib/apiErrors';
 import { env } from '../../lib/env';
 import { routeForMe } from '../../lib/routeForMe';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { DevNote } from '../../components/dev/DevNote';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Note } from '../../components/Note';
@@ -190,6 +191,7 @@ export default function LoginPage() {
           <LocaleToggle />
         </div>
         <h1 className="mb-4 text-lg font-semibold text-slate-900">{t('enter_mobile')}</h1>
+        <DevNote screen="login" />
         <form onSubmit={submitPhone} className="flex flex-col gap-3">
           <input
             type="tel"

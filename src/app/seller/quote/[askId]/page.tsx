@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
+import { DevNote } from '../../../../components/dev/DevNote';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
 import { Input, Select } from '../../../../components/ui/Input';
@@ -40,6 +41,7 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
           <LocaleToggle />
         </header>
 
+        <DevNote screen="seller_quote" />
         <Card>
           <div className="flex flex-col gap-4">
             <Input

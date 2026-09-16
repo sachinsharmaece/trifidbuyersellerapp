@@ -5,6 +5,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../components/BuyerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -67,6 +68,7 @@ export default function BuyerOrdersPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_orders" />
         <OrdersContent />
         <BuyerNav />
       </main>

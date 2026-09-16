@@ -6,6 +6,7 @@ import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { CatalogPicker, type CatalogSelection } from '../../../../components/CatalogPicker';
+import { DevNote } from '../../../../components/dev/DevNote';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
 import { Input, Select } from '../../../../components/ui/Input';
@@ -43,6 +44,7 @@ export default function CreateListingPage() {
           <LocaleToggle />
         </header>
 
+        <DevNote screen="seller_create_listing" />
         <Card>
           <div className="flex flex-col gap-4">
             <CatalogPicker onChange={setSelection} />

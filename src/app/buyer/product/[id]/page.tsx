@@ -6,6 +6,7 @@ import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { BuyerNav } from '../../../../components/BuyerNav';
+import { DevNote } from '../../../../components/dev/DevNote';
 import { RateBlock } from '../../../../components/RateBlock';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
@@ -69,6 +70,7 @@ export default function ProductOffersPage(props: { params: Promise<{ id: string 
           <h1 className="text-xl font-semibold text-slate-900">{t('product_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_product" />
         <OffersContent productId={id} />
         <BuyerNav />
       </main>

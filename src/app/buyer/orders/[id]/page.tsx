@@ -6,6 +6,7 @@ import { FiCheck, FiAlertCircle } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
 import { LocaleToggle } from '../../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
+import { DevNote } from '../../../../components/dev/DevNote';
 import { ProgressLadder } from '../../../../components/ProgressLadder';
 import { Clock } from '../../../../components/Clock';
 import { Note } from '../../../../components/Note';
@@ -131,6 +132,7 @@ export default function OrderDetailPage(props: { params: Promise<{ id: string }>
           <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_order_detail" />
         <OrderContent soId={id} />
       </main>
     </Gate>

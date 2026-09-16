@@ -4,4 +4,6 @@ export const env = {
   appName: process.env.NEXT_PUBLIC_APP_NAME ?? 'TriFid',
   isDevelopment: process.env.NEXT_PUBLIC_ENV !== 'production',
   defaultLocale: (process.env.NEXT_PUBLIC_DEFAULT_LOCALE ?? 'en') as 'en' | 'hi',
+  // Client-walkthrough scaffolding, off by default. See lib/devNotes.ts.
+  showDevNotes: process.env.NEXT_PUBLIC_SHOW_DEV_NOTES === 'true',
 };
