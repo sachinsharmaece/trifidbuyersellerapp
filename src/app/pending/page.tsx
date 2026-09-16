@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '../../providers/SessionProvider';
 import { useLocale } from '../../providers/LocaleProvider';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { DevNote } from '../../components/dev/DevNote';
 import { Loader } from '../../components/ui/Loader';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -50,6 +51,7 @@ export default function PendingPage() {
         </div>
         <h1 className="mb-2 text-lg font-semibold text-slate-900">{copy.title}</h1>
         <p className="mb-6 text-sm text-slate-600">{copy.body}</p>
+        <DevNote screen="pending_gate" />
         <Button variant="secondary" fullWidth onClick={() => void logout()}>
           {t('sign_out')}
         </Button>

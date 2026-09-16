@@ -6,6 +6,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { SellerNav } from '../../../components/SellerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { Card } from '../../../components/ui/Card';
 import { Input } from '../../../components/ui/Input';
@@ -147,6 +148,7 @@ export default function SellerProfilePage() {
           </div>
         </header>
 
+        <DevNote screen="seller_profile" />
         <div className="flex flex-col gap-4">
           <Card>
             <dl>

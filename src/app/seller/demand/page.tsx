@@ -5,6 +5,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { SellerNav } from '../../../components/SellerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Pill } from '../../../components/Pill';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
@@ -56,6 +57,7 @@ export default function DemandBoardPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('demand_board_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="seller_demand" />
         <DemandContent />
         <SellerNav />
       </main>

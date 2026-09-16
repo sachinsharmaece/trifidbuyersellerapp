@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../../components/Gate';
 import { LocaleToggle } from '../../../../../components/LocaleToggle';
+import { DevNote } from '../../../../../components/dev/DevNote';
 import { Note } from '../../../../../components/Note';
 import { Card } from '../../../../../components/ui/Card';
 import { Select, Textarea } from '../../../../../components/ui/Input';
@@ -90,6 +91,7 @@ export default function ComplaintPage(props: { params: Promise<{ id: string }> }
           <h1 className="text-xl font-semibold text-slate-900">{t('complaint_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="buyer_complaint" />
         <ComplaintForm soId={id} />
       </main>
     </Gate>

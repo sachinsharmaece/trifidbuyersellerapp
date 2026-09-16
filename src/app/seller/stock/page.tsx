@@ -5,6 +5,7 @@ import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { SellerNav } from '../../../components/SellerNav';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Pill } from '../../../components/Pill';
 import { Card } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
@@ -111,6 +112,7 @@ export default function MyStockPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('my_stock_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="seller_my_stock" />
         <Link
           href="/seller/listing/create"
           className="mb-4 inline-block text-sm text-brand-600 underline"

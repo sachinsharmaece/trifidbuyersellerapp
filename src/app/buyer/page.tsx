@@ -5,6 +5,7 @@ import { Gate } from '../../components/Gate';
 import { LocaleToggle } from '../../components/LocaleToggle';
 import { AsyncBoundary } from '../../components/AsyncBoundary';
 import { BuyerNav } from '../../components/BuyerNav';
+import { DevNote } from '../../components/dev/DevNote';
 import { FeedCard } from '../../components/FeedCard';
 import { Button } from '../../components/ui/Button';
 import { useLocale } from '../../providers/LocaleProvider';
@@ -52,6 +53,7 @@ export default function BuyerPage() {
             </Button>
           </div>
         </header>
+        <DevNote screen="buyer_feed" />
         <FeedContent />
         <BuyerNav />
       </main>

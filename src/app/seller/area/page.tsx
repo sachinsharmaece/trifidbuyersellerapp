@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import { Gate } from '../../../components/Gate';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { LocaleToggle } from '../../../components/LocaleToggle';
+import { DevNote } from '../../../components/dev/DevNote';
 import { Card } from '../../../components/ui/Card';
 import { Table, Th, Td } from '../../../components/ui/Table';
 import { useAsyncData } from '../../../lib/useAsyncData';
@@ -26,6 +27,7 @@ export default function SellerAreaPage() {
           <h1 className="text-xl font-semibold text-slate-900">{t('area_page_title')}</h1>
           <LocaleToggle />
         </header>
+        <DevNote screen="seller_area" />
         <p className="mb-4 text-sm text-slate-500">{t('area_page_hint')}</p>
         <Card>
           <AsyncBoundary
