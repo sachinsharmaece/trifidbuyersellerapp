@@ -54,6 +54,7 @@ function PoolContent({ poolId }: { poolId: string }) {
               <div className="text-xl font-bold text-slate-900">
                 {formatRupees(pool.myRatePaise)}
               </div>
+              <div className="text-xs text-slate-400">{t('rate_includes_gst')}</div>
             </div>
           )}
 

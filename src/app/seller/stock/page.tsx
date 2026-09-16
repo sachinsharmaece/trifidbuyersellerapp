@@ -50,6 +50,7 @@ function StockContent() {
                 <div className="text-lg font-bold text-slate-900">
                   {formatRupees(line.ratePaise)}
                 </div>
+                <div className="text-xs text-slate-400">{t('rate_excludes_gst')}</div>
                 <div className="mb-2 text-sm text-slate-500">
                   {t('stock_days_left', { days: line.daysRemaining })}
                 </div>

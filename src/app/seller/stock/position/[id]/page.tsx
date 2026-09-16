@@ -49,10 +49,13 @@ function PositionContent({ lineId }: { lineId: string }) {
               #{card.rank} / {card.ofCount}
             </p>
             {card.band && (
-              <p className="text-sm text-slate-500">
-                {formatRupees(card.band.lowPaise)} – {formatRupees(card.band.highPaise)} (
-                {card.band.listingCount})
-              </p>
+              <>
+                <p className="text-sm text-slate-500">
+                  {formatRupees(card.band.lowPaise)} – {formatRupees(card.band.highPaise)} (
+                  {card.band.listingCount})
+                </p>
+                <p className="text-xs text-slate-400">{t('rate_excludes_gst')}</p>
+              </>
             )}
           </Card>
         )

@@ -382,6 +382,14 @@ export const dictionary = {
     'Buyers you never want to sell to, up to your cap.',
     'ऐसे खरीदार जिन्हें आप कभी नहीं बेचना चाहते, अपनी सीमा तक।',
   ],
+
+  // ---------------------------------------------------------------------
+  // DEC-045 — rate basis labels. Buyer rates are GST-inclusive; seller
+  // rates are taxable (GST extra). Shown wherever a rate renders or is
+  // entered, so a dealer never has to guess which basis he is looking at.
+  // ---------------------------------------------------------------------
+  rate_includes_gst: ['Includes GST', 'जीएसटी शामिल'],
+  rate_excludes_gst: ['Excludes GST — your net rate', 'जीएसटी छोड़कर — आपकी शुद्ध दर'],
 } satisfies Record<string, [string, string]>;
 
 export type DictionaryKey = keyof typeof dictionary;

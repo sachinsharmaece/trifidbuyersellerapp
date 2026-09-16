@@ -57,6 +57,7 @@ export default function RateChangePage(props: { params: Promise<{ id: string }> 
             <div className="flex flex-col gap-4">
               <Input
                 label={t('rate_change_new_rate')}
+                hint={t('rate_excludes_gst')}
                 type="number"
                 value={ratePaise}
                 onChange={(e) => setRatePaise(e.target.value)}
