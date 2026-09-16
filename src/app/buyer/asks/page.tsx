@@ -40,6 +40,9 @@ function AskCard({ ask, onChanged }: { ask: MyAskItem; onChanged: () => void }) 
                 ? formatRupees(quote.ratePaiseForIndore)
                 : t('loading')}
             </div>
+            {quote.ratePaiseForIndore !== undefined && (
+              <div className="text-xs text-slate-400">{t('rate_includes_gst')}</div>
+            )}
             <div className="mb-2 text-sm text-slate-500">
               {quote.qtyAvailable} {t('boxes_unit')}
             </div>

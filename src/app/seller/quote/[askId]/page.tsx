@@ -46,6 +46,7 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
           <div className="flex flex-col gap-4">
             <Input
               label={t('quote_rate_label')}
+              hint={t('rate_excludes_gst')}
               type="number"
               value={ratePaise}
               onChange={(e) => setRatePaise(e.target.value)}

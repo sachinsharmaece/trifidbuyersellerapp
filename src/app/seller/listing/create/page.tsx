@@ -61,6 +61,7 @@ export default function CreateListingPage() {
 
             <Input
               label={t('listing_rate_label')}
+              hint={t('rate_excludes_gst')}
               type="number"
               value={ratePaise}
               onChange={(e) => setRatePaise(e.target.value)}

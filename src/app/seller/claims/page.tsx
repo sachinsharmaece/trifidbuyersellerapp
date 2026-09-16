@@ -64,6 +64,7 @@ export default function ClaimBoardPage() {
                 <div className="text-lg font-bold text-slate-900">
                   {formatRupees(item.ratePaise)}
                 </div>
+                <div className="text-xs text-slate-400">{t('rate_excludes_gst')}</div>
                 <div className="mb-3 text-sm text-slate-500">
                   {item.totalQty} {t('boxes_unit')}
                 </div>
