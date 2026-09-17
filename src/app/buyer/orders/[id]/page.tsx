@@ -19,9 +19,11 @@ import { useAsyncData } from '../../../../lib/useAsyncData';
 import {
   getMyOrder,
   getDocuments,
+  getPromotionOffer,
   postConfirmReceipt,
   type BuyerSoDto,
   type OrderDocumentDto,
+  type PromotionOfferDto,
 } from '../../../../lib/ordersApi';
 import type { DictionaryKey } from '../../../../lib/i18n';
 
@@ -37,11 +39,12 @@ function OrderContent({ soId }: { soId: string }) {
   const { callApi } = useSession();
   const [confirmed, setConfirmed] = useState(false);
 
-  const { state, retry } = useAsyncData<[BuyerSoDto, OrderDocumentDto[]]>(
+  const { state, retry } = useAsyncData<[BuyerSoDto, OrderDocumentDto[], PromotionOfferDto | null]>(
     () =>
       Promise.all([
         callApi((token) => getMyOrder(token, soId)),
         callApi((token) => getDocuments(token, soId)),
+        callApi((token) => getPromotionOffer(token, soId)),
       ]),
     () => false,
     [soId],
@@ -49,7 +52,7 @@ function OrderContent({ soId }: { soId: string }) {
 
   return (
     <AsyncBoundary state={state} onRetry={retry}>
-      {([order, documents]) => (
+      {([order, documents, promotionOffer]) => (
         <div className="flex flex-col gap-4">
           <Card>
             <h2 className="text-lg font-semibold text-slate-900">{order.soNo}</h2>
@@ -58,6 +61,20 @@ function OrderContent({ soId }: { soId: string }) {
             </p>
             <ProgressLadder rung={order.rung} />
           </Card>
+
+          {promotionOffer && (
+            <Card>
+              <Note tone="urgent">
+                {t('promoted_fallback_title')}
+                <Clock targetIso={promotionOffer.expiresAt} />
+              </Note>
+              <Link href={`/buyer/orders/${soId}/promotion`}>
+                <Button fullWidth className="mt-3">
+                  {t('view')}
+                </Button>
+              </Link>
+            </Card>
+          )}
 
           {order.canPay && (
             <Card>
