@@ -152,3 +152,34 @@ export interface BuyerRefundDto {
 export function getMyRefunds(accessToken: string): Promise<BuyerRefundDto[]> {
   return apiFetch('/me/refunds', { accessToken });
 }
+
+// API-071 (repurposed, QR-045) — WF-11's promoted-fallback screen (IC-14).
+// The buyer's own price never appears here — it is unchanged, only who
+// supplies it is. `null` means there is no pending offer on this order.
+export interface PromotionOfferDto {
+  expiresAt: string;
+}
+export function getPromotionOffer(
+  accessToken: string,
+  soId: string,
+): Promise<PromotionOfferDto | null> {
+  return apiFetch(`/orders/${soId}/promotion-offer`, { accessToken });
+}
+export function postAcceptPromotion(
+  accessToken: string,
+  soId: string,
+  idempotencyKey: string,
+): Promise<{ accepted: true }> {
+  return apiFetch(`/orders/${soId}/requote/accept`, {
+    method: 'POST',
+    accessToken,
+    body: {},
+    idempotencyKey,
+  });
+}
+export function postRejectPromotion(
+  accessToken: string,
+  soId: string,
+): Promise<{ rejected: true }> {
+  return apiFetch(`/orders/${soId}/requote/reject`, { method: 'POST', accessToken, body: {} });
+}
