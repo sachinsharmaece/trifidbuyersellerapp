@@ -30,11 +30,10 @@ export default function CreateListingPage() {
   const [moqExact, setMoqExact] = useState('1');
   const [expiryBand, setExpiryBand] = useState<'under12' | 'over12'>('over12');
   const [provenance, setProvenance] = useState<'auth' | 'company'>('auth');
+  const [deliveryBand, setDeliveryBand] = useState<'48h' | '2-5d'>('48h');
   const [batch, setBatch] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  const deliveryBand = provenance === 'auth' ? '48h' : '2-5d';
 
   return (
     <Gate>
@@ -97,6 +96,14 @@ export default function CreateListingPage() {
             >
               <option value="auth">{t('cond_provenance_auth')}</option>
               <option value="company">{t('cond_provenance_company')}</option>
+            </Select>
+            <Select
+              label={t('quote_delivery_band')}
+              value={deliveryBand}
+              onChange={(e) => setDeliveryBand(e.target.value as '48h' | '2-5d')}
+            >
+              <option value="48h">{t('cond_delivery_48h')}</option>
+              <option value="2-5d">{t('cond_delivery_2_5d')}</option>
             </Select>
             {provenance === 'auth' && (
               <Input
