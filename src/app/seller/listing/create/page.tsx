@@ -25,7 +25,11 @@ export default function CreateListingPage() {
 
   const [selection, setSelection] = useState<CatalogSelection | null>(null);
   const [scopeType, setScopeType] = useState<ScopeChoice>('my_area');
-  const [ratePaise, setRatePaise] = useState('');
+  // A rate is quoted and typed in rupees; this converts to paise on submit
+  // rather than binding the raw typed number straight to a paise field.
+  const [rateRupeesText, setRateRupeesText] = useState('');
+  const parsedRatePaise =
+    rateRupeesText.trim() === '' ? null : Math.round(Number(rateRupeesText) * 100);
   const [qty, setQty] = useState('');
   const [moqExact, setMoqExact] = useState('1');
   const [expiryBand, setExpiryBand] = useState<'under12' | 'over12'>('over12');
@@ -60,10 +64,15 @@ export default function CreateListingPage() {
 
             <Input
               label={t('listing_rate_label')}
-              hint={t('rate_excludes_gst')}
+              hint={
+                parsedRatePaise !== null && !Number.isNaN(parsedRatePaise) && parsedRatePaise > 0
+                  ? `${t('rate_excludes_gst')} — ${t('rate_preview_saves_as')} ₹${(parsedRatePaise / 100).toFixed(2)}`
+                  : `${t('rate_excludes_gst')} — ${t('rate_hint_rupees')}`
+              }
               type="number"
-              value={ratePaise}
-              onChange={(e) => setRatePaise(e.target.value)}
+              step="0.01"
+              value={rateRupeesText}
+              onChange={(e) => setRateRupeesText(e.target.value)}
             />
             <Input
               label={t('listing_qty_label')}
@@ -122,10 +131,9 @@ export default function CreateListingPage() {
               icon={<FiSend />}
               onClick={() => {
                 if (!selection || selection.allPacks || !selection.skuId) return;
-                const rate = Number(ratePaise);
                 const qtyNum = Number(qty);
                 const moq = Number(moqExact) || 1;
-                if (!rate || !qtyNum) return;
+                if (!parsedRatePaise || Number.isNaN(parsedRatePaise) || !qtyNum) return;
                 if (provenance === 'auth' && !batch) {
                   setError(t('listing_batch_required'));
                   return;
@@ -138,7 +146,7 @@ export default function CreateListingPage() {
                   lines: [
                     {
                       skuId: selection.skuId,
-                      ratePaise: rate,
+                      ratePaise: parsedRatePaise,
                       expiryBand,
                       moqExact: moq,
                       deliveryBand,

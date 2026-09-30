@@ -390,6 +390,11 @@ export const dictionary = {
   // ---------------------------------------------------------------------
   rate_includes_gst: ['Includes GST', 'जीएसटी शामिल'],
   rate_excludes_gst: ['Excludes GST — your net rate', 'जीएसटी छोड़कर — आपकी शुद्ध दर'],
+  // Every rate is entered in rupees, converted to paise before it is sent —
+  // the field never asks for paise directly, so this pairs with a live
+  // preview of the parsed amount rather than a bare unit label.
+  rate_hint_rupees: ['In rupees, e.g. 280.00', 'रुपयों में, जैसे 280.00'],
+  rate_preview_saves_as: ['Saves as', 'इस रूप में सेव होगा'],
 } satisfies Record<string, [string, string]>;
 
 export type DictionaryKey = keyof typeof dictionary;
