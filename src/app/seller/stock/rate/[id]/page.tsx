@@ -22,17 +22,22 @@ export default function RateChangePage(props: { params: Promise<{ id: string }> 
   const { callApi } = useSession();
   const router = useRouter();
 
-  const [ratePaise, setRatePaise] = useState('');
+  // A rate is quoted and typed in rupees; this converts to paise on submit
+  // rather than binding the raw typed number straight to a paise field.
+  const [rateRupeesText, setRateRupeesText] = useState('');
+  const parsedRatePaise =
+    rateRupeesText.trim() === '' ? null : Math.round(Number(rateRupeesText) * 100);
   const [confirmStage, setConfirmStage] = useState<ConfirmStage>('none');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   function submit(doubleConfirmed: boolean) {
-    const rate = Number(ratePaise);
-    if (!rate) return;
+    if (!parsedRatePaise || Number.isNaN(parsedRatePaise)) return;
     setSubmitting(true);
     setError(null);
-    callApi((token) => patchListingLineRate(token, id, { ratePaise: rate, doubleConfirmed }))
+    callApi((token) =>
+      patchListingLineRate(token, id, { ratePaise: parsedRatePaise, doubleConfirmed }),
+    )
       .then(() => router.push('/seller/stock'))
       .catch((err: unknown) => {
         if (err instanceof ApiError && err.code === 'DOUBLE_CONFIRM_REQUIRED') {
@@ -59,10 +64,15 @@ export default function RateChangePage(props: { params: Promise<{ id: string }> 
             <div className="flex flex-col gap-4">
               <Input
                 label={t('rate_change_new_rate')}
-                hint={t('rate_excludes_gst')}
+                hint={
+                  parsedRatePaise !== null && !Number.isNaN(parsedRatePaise) && parsedRatePaise > 0
+                    ? `${t('rate_excludes_gst')} — ${t('rate_preview_saves_as')} ₹${(parsedRatePaise / 100).toFixed(2)}`
+                    : `${t('rate_excludes_gst')} — ${t('rate_hint_rupees')}`
+                }
                 type="number"
-                value={ratePaise}
-                onChange={(e) => setRatePaise(e.target.value)}
+                step="0.01"
+                value={rateRupeesText}
+                onChange={(e) => setRateRupeesText(e.target.value)}
               />
               {error && <Note tone="urgent">{error}</Note>}
               <Button fullWidth loading={submitting} onClick={() => submit(false)}>

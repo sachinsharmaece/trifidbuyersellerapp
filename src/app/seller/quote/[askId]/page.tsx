@@ -21,7 +21,11 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
   const { callApi } = useSession();
   const router = useRouter();
 
-  const [ratePaise, setRatePaise] = useState('');
+  // A rate is quoted and typed in rupees; this converts to paise on submit
+  // rather than binding the raw typed number straight to a paise field.
+  const [rateRupeesText, setRateRupeesText] = useState('');
+  const parsedRatePaise =
+    rateRupeesText.trim() === '' ? null : Math.round(Number(rateRupeesText) * 100);
   const [qtyAvailable, setQtyAvailable] = useState('');
   const [expiryBand, setExpiryBand] = useState<'under12' | 'over12'>('over12');
   const [expiryExact, setExpiryExact] = useState('');
@@ -45,10 +49,15 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
           <div className="flex flex-col gap-4">
             <Input
               label={t('quote_rate_label')}
-              hint={t('rate_excludes_gst')}
+              hint={
+                parsedRatePaise !== null && !Number.isNaN(parsedRatePaise) && parsedRatePaise > 0
+                  ? `${t('rate_excludes_gst')} — ${t('rate_preview_saves_as')} ₹${(parsedRatePaise / 100).toFixed(2)}`
+                  : `${t('rate_excludes_gst')} — ${t('rate_hint_rupees')}`
+              }
               type="number"
-              value={ratePaise}
-              onChange={(e) => setRatePaise(e.target.value)}
+              step="0.01"
+              value={rateRupeesText}
+              onChange={(e) => setRateRupeesText(e.target.value)}
             />
             <Input
               label={t('quote_qty_available')}
@@ -109,10 +118,9 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
               loading={submitting}
               icon={<FiSend />}
               onClick={() => {
-                const rate = Number(ratePaise);
                 const qty = Number(qtyAvailable);
                 const days = Number(daysToIndore);
-                if (!rate || !qty || !expiryExact) {
+                if (!parsedRatePaise || Number.isNaN(parsedRatePaise) || !qty || !expiryExact) {
                   setError(t('pile_expiry_exact_required'));
                   return;
                 }
@@ -123,7 +131,7 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
                 setSubmitting(true);
                 setError(null);
                 const input: PostQuoteInput = {
-                  ratePaiseForIndore: rate,
+                  ratePaiseForIndore: parsedRatePaise,
                   qtyAvailable: qty,
                   expiryBand,
                   expiryExact,

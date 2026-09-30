@@ -18,7 +18,8 @@ export interface RegisterBuyerInput {
   ownerName: string;
   licenceNo: string;
   gstPpobAddress: string;
-  bankDetail: BankDetailInput;
+  // B-25 — optional for a buyer (he pays TriFid, unlike a seller who is paid).
+  bankDetail?: BankDetailInput;
   consent: ConsentInput;
 }
 

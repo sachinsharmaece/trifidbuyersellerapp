@@ -50,7 +50,9 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
       setError('That GSTIN does not check out. Double check it and try again.');
       return;
     }
-    if (step === 3 && !isValidIfsc(ifsc)) {
+    // B-25 — bank detail is optional for a buyer (BR-018); only check the
+    // IFSC shape if he actually started filling it in.
+    if (step === 3 && accountNumber && !isValidIfsc(ifsc)) {
       setError('That IFSC code is not valid.');
       return;
     }
@@ -74,7 +76,8 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
         ownerName,
         licenceNo,
         gstPpobAddress,
-        bankDetail: { accountNumber, ifsc, accountName },
+        // B-25 — optional for a buyer; only sent if he actually gave one.
+        bankDetail: accountNumber ? { accountNumber, ifsc, accountName } : undefined,
         consent: { noticeVersion: NOTICE_VERSION, marketingOptIn },
       });
       onDone();
@@ -167,9 +170,9 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
             <Input
               id="b-account"
               label="Bank account number"
+              hint="Optional — you pay TriFid, you don't get paid, so this is only needed if we ever owe you a refund."
               value={accountNumber}
               onChange={(e) => setAccountNumber(e.target.value)}
-              required
             />
             <Input
               id="b-ifsc"
@@ -177,14 +180,14 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
               value={ifsc}
               onChange={(e) => setIfsc(e.target.value.toUpperCase())}
               maxLength={11}
-              required
+              required={Boolean(accountNumber)}
             />
             <Input
               id="b-acname"
               label="Account holder name"
               value={accountName}
               onChange={(e) => setAccountName(e.target.value)}
-              required
+              required={Boolean(accountNumber)}
             />
             {error && <Note tone="urgent">{error}</Note>}
             <div className="flex gap-3">
