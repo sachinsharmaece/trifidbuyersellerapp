@@ -80,6 +80,8 @@ export interface PostQuoteInput {
   provenance: string;
   batch?: string;
   daysToIndore: number;
+  /** Needed only when the ask is for a product, not one pack. */
+  skuId?: string;
 }
 export function postQuote(
   accessToken: string,

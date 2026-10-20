@@ -290,6 +290,8 @@ export const dictionary = {
   quote_provenance: ['Source', 'स्रोत'],
   quote_batch: ['Batch (required for My stock)', 'बैच (मेरे स्टॉक के लिए ज़रूरी)'],
   quote_days_to_indore: ['Days to reach Indore', 'इंदौर पहुँचने में दिन'],
+  quote_pack: ['Pack you are quoting', 'आप किस पैक का रेट दे रहे हैं'],
+  quote_pack_pick: ['Pick the pack…', 'पैक चुनें…'],
   quote_submit: ['Send quote', 'रेट भेजें'],
   my_rates_given_title: ['My rates given', 'मेरे दिए गए रेट'],
   create_listing_title: ['Create a listing', 'लिस्टिंग बनाएँ'],
