@@ -14,7 +14,9 @@ export interface ConsentInput {
 export interface RegisterBuyerInput {
   mobile: string;
   firm: string;
-  gstin: string;
+  // Phase 3 (DEC-054) — GSTIN, or PAN for a buyer without one.
+  gstin?: string;
+  pan?: string;
   ownerName: string;
   licenceNo: string;
   gstPpobAddress: string;
