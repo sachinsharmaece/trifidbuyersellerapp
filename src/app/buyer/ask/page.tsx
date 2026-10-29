@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../components/Gate';
@@ -13,6 +14,7 @@ import { Button } from '../../../components/ui/Button';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
 import { postAsk } from '../../../lib/demandApi';
+import { getProductOffers } from '../../../lib/listingApi';
 import { ApiError } from '../../../lib/apiErrors';
 
 export default function RaiseAskPage() {
@@ -26,6 +28,28 @@ export default function RaiseAskPage() {
   const [deliveryBand, setDeliveryBand] = useState<'' | '48h' | '2-5d'>('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // 29 Oct — a pack already on offer to him is bought from its offers (Purchase → Confirmations);
+  // an ask is only for what is not listed (Purchase → Demand).
+  const pickedProductId = selection?.productId ?? '';
+  const pickedSkuId = selection?.allPacks ? '' : (selection?.skuId ?? '');
+  const pickedKey = `${pickedProductId}|${pickedSkuId}`;
+  // The selection last found on offer; a stale answer for an earlier pick never matches.
+  const [listedKey, setListedKey] = useState<string | null>(null);
+  const listed = pickedProductId !== '' && listedKey === pickedKey;
+  useEffect(() => {
+    if (!pickedProductId) return;
+    let live = true;
+    callApi((token) => getProductOffers(token, pickedProductId))
+      .then((offers) => {
+        if (!live) return;
+        const onOffer = offers.offers.some((o) => !pickedSkuId || o.skuId === pickedSkuId);
+        setListedKey(onOffer ? pickedKey : null);
+      })
+      .catch(() => undefined); // The server still takes the ask; this is only a pointer.
+    return () => {
+      live = false;
+    };
+  }, [callApi, pickedProductId, pickedSkuId, pickedKey]);
 
   return (
     <Gate>
@@ -67,13 +91,22 @@ export default function RaiseAskPage() {
             <option value="2-5d">{t('cond_delivery_2_5d')}</option>
           </Select>
 
+          {listed && (
+            <Note tone="wait">
+              {t('ask_listed_note')}{' '}
+              <Link className="font-medium underline" href={`/buyer/product/${pickedProductId}`}>
+                {t('ask_listed_view')}
+              </Link>
+            </Note>
+          )}
+
           {error && <Note tone="urgent">{error}</Note>}
 
           <Button
             fullWidth
             icon={<FiSend />}
             loading={submitting}
-            disabled={!selection || !qty}
+            disabled={!selection || !qty || listed}
             onClick={() => {
               if (!selection) return;
               const qtyNum = Number(qty);

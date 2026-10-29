@@ -155,6 +155,16 @@ export const dictionary = {
     'अभी कोई डिलीवरी पता दर्ज नहीं है — सेल्स डेस्क से संपर्क करें।',
   ],
   buy_submit: ['Request this offer', 'यह ऑफ़र माँगें'],
+  buy_registered_address: [
+    'We will deliver to your registered address.',
+    'हम आपके पंजीकृत पते पर डिलीवरी करेंगे।',
+  ],
+  buy_primary_location: ['My primary delivery location', 'मेरा मुख्य डिलीवरी पता'],
+  ask_listed_note: [
+    'This is already on offer for you — buy it from the offers instead of asking for a rate.',
+    'यह आपके लिए पहले से ऑफ़र में है — रेट माँगने के बजाय ऑफ़र से खरीदें।',
+  ],
+  ask_listed_view: ['See the offers', 'ऑफ़र देखें'],
   buy_wait_with_others: [
     'Or wait with others for a better rate',
     'या बेहतर रेट के लिए दूसरों के साथ रुकें',
