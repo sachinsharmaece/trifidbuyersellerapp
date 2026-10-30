@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { AddedToOpenAskNote } from '../../../components/AddedToOpenAskNote';
 import { Gate } from '../../../components/Gate';
 import { LocaleToggle } from '../../../components/LocaleToggle';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
@@ -134,6 +135,9 @@ export default function MyAsksPage() {
         <Link href="/buyer/ask" className="mb-4 inline-block text-sm text-brand-600 underline">
           {t('ask_raise_title')}
         </Link>
+        <Suspense fallback={null}>
+          <AddedToOpenAskNote />
+        </Suspense>
         <AsksContent />
         <BuyerNav />
       </main>

@@ -68,14 +68,14 @@ function BuyForm({ lineId }: { lineId: string }) {
           />
 
           {locations.length === 0 ? (
-            <Note tone="urgent">{t('buy_no_locations')}</Note>
+            <Note>{t('buy_registered_address')}</Note>
           ) : (
             <Select
               label={t('buy_delivery_location')}
               value={locationId}
               onChange={(e) => setLocationId(e.target.value)}
             >
-              <option value="">{t('pick_choose')}</option>
+              <option value="">{t('buy_primary_location')}</option>
               {locations.map((loc) => (
                 <option key={loc.locationId} value={loc.locationId}>
                   {loc.label}
@@ -88,20 +88,18 @@ function BuyForm({ lineId }: { lineId: string }) {
 
           <GestureConfirmButton
             label={t('buy_submit')}
-            disabled={locations.length === 0}
             onConfirm={() => {
               const qtyNum = Number(qty);
               if (!qtyNum || qtyNum < line.moqExact) {
                 setError(t('buy_below_moq'));
                 return;
               }
-              if (!locationId) return;
               setError(null);
               callApi((token) =>
                 postInquire(
                   token,
                   lineId,
-                  { qty: qtyNum, deliveryLocationId: locationId },
+                  { qty: qtyNum, ...(locationId ? { deliveryLocationId: locationId } : {}) },
                   newIdempotencyKey(),
                 ),
               )

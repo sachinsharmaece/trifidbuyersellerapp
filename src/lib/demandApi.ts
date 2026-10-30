@@ -11,7 +11,14 @@ export interface RaiseAskInput {
   qty: number;
   conditionRequirement: { expiryBand: string; deliveryBand?: string };
 }
-export function postAsk(accessToken: string, input: RaiseAskInput): Promise<{ askId: string }> {
+/**
+ * 30 Oct — `merged`: the same pack and conditions as an ask he already has open, so the boxes were
+ * added to that one (`qty` is its total now) instead of opening another (BR-371).
+ */
+export function postAsk(
+  accessToken: string,
+  input: RaiseAskInput,
+): Promise<{ askId: string; merged?: boolean; qty?: number }> {
   return apiFetch('/asks', { method: 'POST', accessToken, body: input });
 }
 

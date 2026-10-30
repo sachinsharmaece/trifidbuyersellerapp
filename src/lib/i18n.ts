@@ -155,6 +155,16 @@ export const dictionary = {
     'अभी कोई डिलीवरी पता दर्ज नहीं है — सेल्स डेस्क से संपर्क करें।',
   ],
   buy_submit: ['Request this offer', 'यह ऑफ़र माँगें'],
+  buy_registered_address: [
+    'We will deliver to your registered address.',
+    'हम आपके पंजीकृत पते पर डिलीवरी करेंगे।',
+  ],
+  buy_primary_location: ['My primary delivery location', 'मेरा मुख्य डिलीवरी पता'],
+  ask_listed_note: [
+    'This is already on offer for you — buy it from the offers instead of asking for a rate.',
+    'यह आपके लिए पहले से ऑफ़र में है — रेट माँगने के बजाय ऑफ़र से खरीदें।',
+  ],
+  ask_listed_view: ['See the offers', 'ऑफ़र देखें'],
   buy_wait_with_others: [
     'Or wait with others for a better rate',
     'या बेहतर रेट के लिए दूसरों के साथ रुकें',
@@ -165,6 +175,10 @@ export const dictionary = {
     'विक्रेता पुष्टि करेगा कि वह कितना दे सकता है, आमतौर पर कुछ घंटों में।',
   ],
   ask_raise_title: ['Ask for a rate', 'रेट माँगें'],
+  ask_added_to_open: [
+    'Added to your open ask for this pack — {qty} boxes now.',
+    'इस पैक के लिए आपकी खुली माँग में जोड़ दिया गया — अब {qty} बॉक्स।',
+  ],
   ask_qty_label: ['How many boxes do you need?', 'आपको कितने बॉक्स चाहिए?'],
   ask_expiry_requirement: ['Minimum shelf life you need', 'आपको चाहिए न्यूनतम शेल्फ लाइफ'],
   ask_delivery_requirement: [
