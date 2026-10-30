@@ -125,7 +125,12 @@ export default function RaiseAskPage() {
                   },
                 }),
               )
-                .then(() => router.push('/buyer/asks'))
+                .then((result) =>
+                  // 30 Oct — say so when it went into an ask he already had open (BR-371).
+                  router.push(
+                    result.merged && result.qty ? `/buyer/asks?added=${result.qty}` : '/buyer/asks',
+                  ),
+                )
                 .catch((err: unknown) => {
                   setError(err instanceof ApiError ? err.message : 'Something went wrong.');
                   setSubmitting(false);

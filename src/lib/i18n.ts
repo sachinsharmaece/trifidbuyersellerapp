@@ -175,6 +175,10 @@ export const dictionary = {
     'विक्रेता पुष्टि करेगा कि वह कितना दे सकता है, आमतौर पर कुछ घंटों में।',
   ],
   ask_raise_title: ['Ask for a rate', 'रेट माँगें'],
+  ask_added_to_open: [
+    'Added to your open ask for this pack — {qty} boxes now.',
+    'इस पैक के लिए आपकी खुली माँग में जोड़ दिया गया — अब {qty} बॉक्स।',
+  ],
   ask_qty_label: ['How many boxes do you need?', 'आपको कितने बॉक्स चाहिए?'],
   ask_expiry_requirement: ['Minimum shelf life you need', 'आपको चाहिए न्यूनतम शेल्फ लाइफ'],
   ask_delivery_requirement: [
