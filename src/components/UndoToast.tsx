@@ -31,7 +31,8 @@ export function UndoToast({
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-md items-center gap-3 rounded-lg bg-slate-900 px-4 py-3 text-white shadow-lg"
+      aria-live="polite"
+      className="fixed inset-x-4 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-md items-center gap-3 rounded-lg bg-slate-900 px-4 py-3 text-white shadow-xl"
     >
       <span className="flex-1 text-sm">{message}</span>
       <Clock targetIso={deadlineIso} onExpire={() => setExpired(true)} />

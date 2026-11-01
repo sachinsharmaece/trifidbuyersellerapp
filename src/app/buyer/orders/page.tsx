@@ -2,9 +2,8 @@
 
 import Link from 'next/link';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
-import { BuyerNav } from '../../../components/BuyerNav';
 import { DevNote } from '../../../components/dev/DevNote';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
@@ -63,14 +62,10 @@ export default function BuyerOrdersPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('orders_title')} />
         <DevNote screen="buyer_orders" />
         <OrdersContent />
-        <BuyerNav />
       </main>
     </Gate>
   );

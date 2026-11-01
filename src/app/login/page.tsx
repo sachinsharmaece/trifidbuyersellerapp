@@ -12,6 +12,7 @@ import { ApiError } from '../../lib/apiErrors';
 import { env } from '../../lib/env';
 import { routeForMe } from '../../lib/routeForMe';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { Wordmark } from '../../components/Wordmark';
 import { DevNote } from '../../components/dev/DevNote';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -119,8 +120,9 @@ export default function LoginPage() {
 
   if (step === 'locked') {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-        <Card className="w-full max-w-sm">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 p-4">
+        <Wordmark />
+        <Card className="w-full max-w-sm shadow-md">
           <div className="mb-4 flex justify-center">
             <LocaleToggle />
           </div>
@@ -135,8 +137,9 @@ export default function LoginPage() {
 
   if (step === 'otp') {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-        <Card className="w-full max-w-sm">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 p-4">
+        <Wordmark />
+        <Card className="w-full max-w-sm shadow-md">
           <div className="mb-4 flex justify-center">
             <LocaleToggle />
           </div>
@@ -145,6 +148,7 @@ export default function LoginPage() {
             {otpNote === 'new_device' && <Note tone="wait">{t('new_device')}</Note>}
             <input
               inputMode="numeric"
+              autoComplete="one-time-code"
               maxLength={6}
               autoFocus
               value={code}
@@ -185,8 +189,9 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <Card className="w-full max-w-sm">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 p-4">
+      <Wordmark />
+      <Card className="w-full max-w-sm shadow-md">
         <div className="mb-4 flex justify-center">
           <LocaleToggle />
         </div>
@@ -196,6 +201,7 @@ export default function LoginPage() {
           <input
             type="tel"
             inputMode="numeric"
+            autoComplete="tel-national"
             maxLength={10}
             placeholder={t('mobile_placeholder')}
             value={mobile}

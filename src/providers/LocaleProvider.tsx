@@ -31,6 +31,11 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  useEffect(() => {
+    // Screen readers pick their voice from <html lang> — Hindi read as English is gibberish.
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
     try {

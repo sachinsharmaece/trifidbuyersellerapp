@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { CatalogPicker, type CatalogSelection } from '../../../components/CatalogPicker';
 import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
@@ -53,11 +53,8 @@ export default function RaiseAskPage() {
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('ask_raise_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('ask_raise_title')} backHref={'/buyer'} />
         <DevNote screen="buyer_ask" />
         <div className="flex flex-col gap-4">
           <Note>{t('ask_no_price_note')}</Note>

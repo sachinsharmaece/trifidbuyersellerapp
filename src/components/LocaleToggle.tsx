@@ -11,14 +11,14 @@ export function LocaleToggle() {
     <div
       role="group"
       aria-label="Language"
-      className="inline-flex gap-1 rounded-md border border-slate-300 p-0.5"
+      className="inline-flex gap-0.5 rounded-md border border-slate-300 bg-white p-0.5"
     >
       <button
         type="button"
         aria-pressed={locale === 'en'}
         onClick={() => setLocale('en')}
-        className={`rounded px-2.5 py-1 text-xs font-medium ${
-          locale === 'en' ? 'bg-brand-500 text-white' : 'text-slate-600'
+        className={`min-h-8 min-w-9 rounded px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 ${
+          locale === 'en' ? 'bg-brand-500 text-white' : 'text-slate-600 hover:bg-slate-100'
         }`}
       >
         EN
@@ -27,8 +27,8 @@ export function LocaleToggle() {
         type="button"
         aria-pressed={locale === 'hi'}
         onClick={() => setLocale('hi')}
-        className={`rounded px-2.5 py-1 text-xs font-medium ${
-          locale === 'hi' ? 'bg-brand-500 text-white' : 'text-slate-600'
+        className={`min-h-8 min-w-9 rounded px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600 ${
+          locale === 'hi' ? 'bg-brand-500 text-white' : 'text-slate-600 hover:bg-slate-100'
         }`}
       >
         हिंदी

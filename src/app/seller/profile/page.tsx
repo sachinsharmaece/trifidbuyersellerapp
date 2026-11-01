@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { FiLogOut, FiTrash2 } from 'react-icons/fi';
+import { FiTrash2 } from 'react-icons/fi';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
-import { SellerNav } from '../../../components/SellerNav';
 import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { Card } from '../../../components/ui/Card';
@@ -133,20 +132,12 @@ function ExclusionsSection() {
 
 export default function SellerProfilePage() {
   const { t } = useLocale();
-  const { logout, me } = useSession();
+  const { me } = useSession();
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('profile_title')}</h1>
-          <div className="flex items-center gap-2">
-            <LocaleToggle />
-            <Button variant="ghost" size="sm" icon={<FiLogOut />} onClick={() => void logout()}>
-              {t('sign_out')}
-            </Button>
-          </div>
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('profile_title')} showSignOut />
 
         <DevNote screen="seller_profile" />
         <div className="flex flex-col gap-4">
@@ -163,8 +154,6 @@ export default function SellerProfilePage() {
             <Note>{t('help_call_desk_body')}</Note>
           </Card>
         </div>
-
-        <SellerNav />
       </main>
     </Gate>
   );

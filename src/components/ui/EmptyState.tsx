@@ -3,10 +3,12 @@ import { FiInbox } from 'react-icons/fi';
 
 export function EmptyState({ message, action }: { message: string; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-3 py-12 text-center text-slate-500">
-      <FiInbox className="text-2xl text-slate-300" aria-hidden />
-      <p>{message}</p>
-      {action}
+    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-slate-300 bg-white/60 px-6 py-12 text-center">
+      <span className="flex size-11 items-center justify-center rounded-full bg-slate-100 text-xl text-slate-400">
+        <FiInbox aria-hidden />
+      </span>
+      <p className="max-w-xs text-sm text-slate-500">{message}</p>
+      {action && <div className="mt-1">{action}</div>}
     </div>
   );
 }

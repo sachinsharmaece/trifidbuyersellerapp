@@ -1,17 +1,16 @@
 'use client';
 
 import { use, useState } from 'react';
-import Link from 'next/link';
 import { FiCheck, FiAlertCircle } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
-import { LocaleToggle } from '../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../components/AppHeader';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { DevNote } from '../../../../components/dev/DevNote';
 import { ProgressLadder } from '../../../../components/ProgressLadder';
 import { Clock } from '../../../../components/Clock';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
-import { Button } from '../../../../components/ui/Button';
+import { Button, ButtonLink } from '../../../../components/ui/Button';
 import { formatRupees } from '../../../../lib/format';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
@@ -68,11 +67,9 @@ function OrderContent({ soId }: { soId: string }) {
                 {t('promoted_fallback_title')}
                 <Clock targetIso={promotionOffer.expiresAt} />
               </Note>
-              <Link href={`/buyer/orders/${soId}/promotion`}>
-                <Button fullWidth className="mt-3">
-                  {t('view')}
-                </Button>
-              </Link>
+              <ButtonLink href={`/buyer/orders/${soId}/promotion`} fullWidth className="mt-3">
+                {t('view')}
+              </ButtonLink>
             </Card>
           )}
 
@@ -81,11 +78,9 @@ function OrderContent({ soId }: { soId: string }) {
               <Note tone="urgent">
                 <Clock targetIso={order.payDeadline} />
               </Note>
-              <Link href={`/buyer/orders/${soId}/pay`}>
-                <Button fullWidth className="mt-3">
-                  {t('order_pay_now')}
-                </Button>
-              </Link>
+              <ButtonLink href={`/buyer/orders/${soId}/pay`} fullWidth className="mt-3">
+                {t('order_pay_now')}
+              </ButtonLink>
             </Card>
           )}
 
@@ -111,11 +106,15 @@ function OrderContent({ soId }: { soId: string }) {
                 >
                   {t('order_confirm_receipt')}
                 </Button>
-                <Link href={`/buyer/orders/${soId}/complaint`} className="flex-1">
-                  <Button fullWidth variant="secondary" icon={<FiAlertCircle />}>
-                    {t('order_raise_complaint')}
-                  </Button>
-                </Link>
+                <ButtonLink
+                  href={`/buyer/orders/${soId}/complaint`}
+                  fullWidth
+                  variant="secondary"
+                  icon={<FiAlertCircle />}
+                  className="flex-1"
+                >
+                  {t('order_raise_complaint')}
+                </ButtonLink>
               </div>
             </Card>
           )}
@@ -144,11 +143,8 @@ export default function OrderDetailPage(props: { params: Promise<{ id: string }>
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('orders_title')} backHref={'/buyer/orders'} />
         <DevNote screen="buyer_order_detail" />
         <OrderContent soId={id} />
       </main>

@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
-import { SellerNav } from '../../../components/SellerNav';
 import { DevNote } from '../../../components/dev/DevNote';
 import { Pill } from '../../../components/Pill';
 import { Card } from '../../../components/ui/Card';
-import { Button } from '../../../components/ui/Button';
+import { Button, ButtonLink } from '../../../components/ui/Button';
 import { formatRupees } from '../../../lib/format';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
@@ -61,16 +60,20 @@ function StockContent() {
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2">
-                  <Link href={`/seller/stock/position/${line.listingLineId}`}>
-                    <Button variant="secondary" size="sm">
-                      {t('position_card_title')}
-                    </Button>
-                  </Link>
-                  <Link href={`/seller/stock/rate/${line.listingLineId}`}>
-                    <Button variant="secondary" size="sm">
-                      {t('rate_change_title')}
-                    </Button>
-                  </Link>
+                  <ButtonLink
+                    href={`/seller/stock/position/${line.listingLineId}`}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    {t('position_card_title')}
+                  </ButtonLink>
+                  <ButtonLink
+                    href={`/seller/stock/rate/${line.listingLineId}`}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    {t('rate_change_title')}
+                  </ButtonLink>
                   {line.state === 'live' ? (
                     <Button
                       variant="secondary"
@@ -108,11 +111,8 @@ export default function MyStockPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('my_stock_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('my_stock_title')} />
         <DevNote screen="seller_my_stock" />
         <Link
           href="/seller/listing/create"
@@ -121,7 +121,6 @@ export default function MyStockPage() {
           {t('create_listing_title')}
         </Link>
         <StockContent />
-        <SellerNav />
       </main>
     </Gate>
   );

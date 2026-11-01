@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { FiTruck, FiClock } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
-import { LocaleToggle } from '../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../components/AppHeader';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { DevNote } from '../../../../components/dev/DevNote';
 import { ProgressLadder } from '../../../../components/ProgressLadder';
@@ -210,11 +210,8 @@ export default function SellerOrderDetailPage(props: { params: Promise<{ id: str
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('orders_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('orders_title')} backHref={'/seller/orders'} />
         <DevNote screen="seller_order_detail" />
         <OrderContent poId={id} />
       </main>

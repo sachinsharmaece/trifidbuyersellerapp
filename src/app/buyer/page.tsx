@@ -2,12 +2,10 @@
 
 import Link from 'next/link';
 import { Gate } from '../../components/Gate';
-import { LocaleToggle } from '../../components/LocaleToggle';
+import { AppHeader } from '../../components/AppHeader';
 import { AsyncBoundary } from '../../components/AsyncBoundary';
-import { BuyerNav } from '../../components/BuyerNav';
 import { DevNote } from '../../components/dev/DevNote';
 import { FeedCard } from '../../components/FeedCard';
-import { Button } from '../../components/ui/Button';
 import { useLocale } from '../../providers/LocaleProvider';
 import { useSession } from '../../providers/SessionProvider';
 import { useAsyncData } from '../../lib/useAsyncData';
@@ -39,23 +37,13 @@ function FeedContent() {
 
 export default function BuyerPage() {
   const { t } = useLocale();
-  const { logout } = useSession();
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('feed_title')}</h1>
-          <div className="flex items-center gap-2">
-            <LocaleToggle />
-            <Button variant="ghost" size="sm" onClick={() => void logout()}>
-              {t('sign_out')}
-            </Button>
-          </div>
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('feed_title')} showSignOut />
         <DevNote screen="buyer_feed" />
         <FeedContent />
-        <BuyerNav />
       </main>
     </Gate>
   );
