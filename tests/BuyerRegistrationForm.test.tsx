@@ -33,7 +33,7 @@ describe('BuyerRegistrationForm (GSTIN checksum gate)', () => {
     render(<BuyerRegistrationForm initialMobile="9876543210" onDone={vi.fn()} />);
 
     fireEvent.change(screen.getByLabelText(/firm name/i), { target: { value: 'Test Firm' } });
-    fireEvent.change(screen.getByLabelText(/gstin/i), { target: { value: '23AAAAA0000A1Z5' } }); // wrong checksum
+    fireEvent.change(screen.getByLabelText(/^gstin/i), { target: { value: '23AAAAA0000A1Z5' } }); // wrong checksum
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
     expect(screen.getByText(/does not check out/i)).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('BuyerRegistrationForm (GSTIN checksum gate)', () => {
     render(<BuyerRegistrationForm initialMobile="9876543210" onDone={onDone} />);
 
     fireEvent.change(screen.getByLabelText(/firm name/i), { target: { value: 'Test Firm' } });
-    fireEvent.change(screen.getByLabelText(/gstin/i), { target: { value: '27AAPFU0939F1ZV' } }); // checksum-valid
+    fireEvent.change(screen.getByLabelText(/^gstin/i), { target: { value: '27AAPFU0939F1ZV' } }); // checksum-valid
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
     fireEvent.change(await screen.findByLabelText(/owner name/i), { target: { value: 'Owner' } });
@@ -72,5 +72,27 @@ describe('BuyerRegistrationForm (GSTIN checksum gate)', () => {
     expect(registerBuyer).toHaveBeenCalledWith(
       expect.objectContaining({ firm: 'Test Firm', gstin: '27AAPFU0939F1ZV' }),
     );
+  });
+
+  // Phase 3 (DEC-054) — a buyer without a GSTIN registers on his PAN.
+  it('asks for GSTIN or PAN, and moves on with PAN alone', () => {
+    setUpLocale();
+    render(<BuyerRegistrationForm initialMobile="9876543210" onDone={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText(/firm name/i), { target: { value: 'Small Shop' } });
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(screen.getByText(/or your PAN, if you have no GSTIN/i)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/^pan/i), { target: { value: 'abcfp1234k' } });
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(screen.getByLabelText(/owner name/i)).toBeInTheDocument();
+  });
+
+  it('fills PAN from the GSTIN and locks it', () => {
+    setUpLocale();
+    render(<BuyerRegistrationForm initialMobile="9876543210" onDone={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText(/^gstin/i), { target: { value: '27AAPFU0939F1ZV' } });
+    const pan = screen.getByLabelText(/^pan/i) as HTMLInputElement;
+    expect(pan.value).toBe('AAPFU0939F');
+    expect(pan.disabled).toBe(true);
   });
 });

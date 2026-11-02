@@ -50,9 +50,12 @@ function OffersContent({ productId }: { productId: string }) {
               </Link>
             </Card>
           ))}
-          <Link href="/buyer/ask" className="text-center text-sm text-brand-600 underline">
-            {t('buy_wait_with_others')}
-          </Link>
+          {/* 29 Oct — a listed product is bought from its offers; an ask is for what is not listed. */}
+          {data.offers.length === 0 && (
+            <Link href="/buyer/ask" className="text-center text-sm text-brand-600 underline">
+              {t('ask_raise_title')}
+            </Link>
+          )}
         </div>
       )}
     </AsyncBoundary>

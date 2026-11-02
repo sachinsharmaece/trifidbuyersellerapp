@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { FiArrowLeft, FiArrowRight, FiCheck } from 'react-icons/fi';
 import { registerBuyer } from '../lib/onboardingApi';
-import { isValidGstin, isValidIfsc } from '../lib/validators';
+import { isValidGstin, isValidIfsc, isValidPan, panFromGstin } from '../lib/validators';
 import { ApiError } from '../lib/apiErrors';
 import { useLocale } from '../providers/LocaleProvider';
 import { Card } from './ui/Card';
@@ -34,6 +34,8 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
   const [mobile, setMobile] = useState(initialMobile);
   const [firm, setFirm] = useState('');
   const [gstin, setGstin] = useState('');
+  // Phase 3 (DEC-054) — a buyer without a GSTIN registers on his PAN.
+  const [pan, setPan] = useState('');
   const [ownerName, setOwnerName] = useState('');
   const [gstPpobAddress, setGstPpobAddress] = useState('');
   const [licenceNo, setLicenceNo] = useState('');
@@ -46,9 +48,19 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
   function goNext(event: FormEvent): void {
     event.preventDefault();
     setError(null);
-    if (step === 1 && !isValidGstin(gstin)) {
-      setError('That GSTIN does not check out. Double check it and try again.');
-      return;
+    if (step === 1) {
+      if (!gstin && !pan) {
+        setError('Enter your GSTIN — or your PAN, if you have no GSTIN.');
+        return;
+      }
+      if (gstin && !isValidGstin(gstin)) {
+        setError('That GSTIN does not check out. Double check it and try again.');
+        return;
+      }
+      if (!gstin && !isValidPan(pan)) {
+        setError('Enter your PAN as 5 letters, 4 digits and 1 letter.');
+        return;
+      }
     }
     // B-25 — bank detail is optional for a buyer (BR-018); only check the
     // IFSC shape if he actually started filling it in.
@@ -72,7 +84,7 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
       await registerBuyer({
         mobile,
         firm,
-        gstin,
+        ...(gstin ? { gstin } : { pan }),
         ownerName,
         licenceNo,
         gstPpobAddress,
@@ -118,10 +130,23 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
             <Input
               id="b-gstin"
               label="GSTIN"
+              hint="Leave blank if you have no GSTIN, and enter your PAN below."
               value={gstin}
-              onChange={(e) => setGstin(e.target.value.toUpperCase())}
+              onChange={(e) => {
+                const next = e.target.value.toUpperCase().replace(/\s/g, '');
+                setGstin(next);
+                if (next.length >= 12) setPan(panFromGstin(next));
+              }}
               maxLength={15}
-              required
+            />
+            <Input
+              id="b-pan"
+              label="PAN"
+              hint={gstin ? 'Taken from your GSTIN.' : 'Needed only when you have no GSTIN.'}
+              value={pan}
+              disabled={Boolean(gstin)}
+              onChange={(e) => setPan(e.target.value.toUpperCase().replace(/\s/g, ''))}
+              maxLength={10}
             />
             {error && <Note tone="urgent">{error}</Note>}
             <Button type="submit" fullWidth icon={<FiArrowRight />}>
@@ -207,8 +232,8 @@ export function BuyerRegistrationForm({ initialMobile, onDone }: BuyerRegistrati
             <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
               <dt className="font-medium text-slate-500">Firm</dt>
               <dd className="text-slate-900">{firm}</dd>
-              <dt className="font-medium text-slate-500">GSTIN</dt>
-              <dd className="text-slate-900">{gstin}</dd>
+              <dt className="font-medium text-slate-500">{gstin ? 'GSTIN' : 'PAN'}</dt>
+              <dd className="text-slate-900">{gstin || pan}</dd>
               <dt className="font-medium text-slate-500">Mobile</dt>
               <dd className="text-slate-900">{mobile}</dd>
             </dl>

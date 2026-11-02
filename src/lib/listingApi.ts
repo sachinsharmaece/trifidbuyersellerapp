@@ -30,6 +30,7 @@ export function getFeed(accessToken: string, cursor = 0, limit = 20): Promise<Bu
 
 export interface BuyerOfferDto {
   listingLineId: string;
+  skuId: string;
   ratePaise: number;
   conditions: ConditionTags;
   hasPool: boolean;
@@ -70,7 +71,8 @@ export function getListingLineForBuy(
 export function postInquire(
   accessToken: string,
   listingLineId: string,
-  input: { qty: number; deliveryLocationId: string },
+  // 29 Oct — without one it goes to his primary location, else his registered address.
+  input: { qty: number; deliveryLocationId?: string },
   idempotencyKey: string,
 ): Promise<{ pileId: string }> {
   return apiFetch(`/listings/lines/${listingLineId}/inquire`, {
