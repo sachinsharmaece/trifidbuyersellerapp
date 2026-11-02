@@ -21,7 +21,7 @@ describe('An offer the seller has already answered (2 Nov)', () => {
     expect(screen.getByRole('link', { name: 'Buy' })).toHaveAttribute('href', '/buyer/buy/l1');
   });
 
-  it.each(['confirmed', 'requoted', 'declined'] as const)(
+  it.each(['confirmed', 'short', 'requoted', 'declined'] as const)(
     'a %s offer says it is not taking requests, instead of a button that would be refused',
     (closed) => {
       setUp();

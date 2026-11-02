@@ -14,7 +14,7 @@ export function OfferBuyAction({
   closed,
 }: {
   listingLineId: string;
-  closed: 'confirmed' | 'requoted' | 'declined' | 'sold_out' | null;
+  closed: 'confirmed' | 'short' | 'requoted' | 'declined' | 'sold_out' | null;
 }) {
   const { t } = useLocale();
   if (closed) {
