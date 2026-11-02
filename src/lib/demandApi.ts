@@ -182,3 +182,49 @@ export function postClaim(accessToken: string, pileId: string): Promise<{ claimI
 export function postUndoClaim(accessToken: string, claimId: string): Promise<{ undone: true }> {
   return apiFetch(`/claims/${claimId}/undo`, { method: 'POST', accessToken, body: {} });
 }
+
+/**
+ * 2 Nov — BR-378. The deal given to him when the seller confirmed the pile he is on: his boxes, the
+ * expiry, his own rate, held for 24 hours. His to take (an order is made) or walk away from.
+ */
+export interface PileOffer {
+  requestId: string;
+  brand: string;
+  packLabel: string | null;
+  /** The boxes offered — fewer than he asked on a short pile. */
+  boxes: number;
+  askedBoxes: number;
+  /** His own rate; absent while the margin matrix has no cell for him. */
+  ratePaise: number | null;
+  /** The expiry the seller fixed: a year, or month and year. */
+  expiryExact: string | null;
+  holdUntil: string;
+}
+
+export function getMyPileOffers(accessToken: string): Promise<PileOffer[]> {
+  return apiFetch('/pile-offers', { accessToken });
+}
+
+export function postAcceptPileOffer(
+  accessToken: string,
+  requestId: string,
+  idempotencyKey: string,
+): Promise<{ soId: string; boxes: number }> {
+  return apiFetch(`/pile-offers/${requestId}/accept`, {
+    method: 'POST',
+    accessToken,
+    idempotencyKey,
+  });
+}
+
+export function postDeclinePileOffer(
+  accessToken: string,
+  requestId: string,
+  idempotencyKey: string,
+): Promise<{ released: boolean }> {
+  return apiFetch(`/pile-offers/${requestId}/decline`, {
+    method: 'POST',
+    accessToken,
+    idempotencyKey,
+  });
+}

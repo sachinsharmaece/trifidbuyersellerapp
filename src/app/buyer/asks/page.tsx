@@ -10,8 +10,27 @@ import { DevNote } from '../../../components/dev/DevNote';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
 import { useAsyncData } from '../../../lib/useAsyncData';
-import { getMyAsks, type MyAskItem } from '../../../lib/demandApi';
+import { getMyAsks, getMyPileOffers, type MyAskItem, type PileOffer } from '../../../lib/demandApi';
 import { AskCard } from '../../../components/AskCard';
+import { PileOfferCard } from '../../../components/PileOfferCard';
+
+/** 2 Nov — BR-378: deals a seller confirmed for him, waiting on his word. Quiet when there are none. */
+function PileOffers() {
+  const { callApi } = useSession();
+  const { state, retry } = useAsyncData<PileOffer[]>(
+    () => callApi((token) => getMyPileOffers(token)),
+    (items) => items.length === 0,
+    [],
+  );
+  if (state.status !== 'success') return null;
+  return (
+    <div className="mb-4 flex flex-col gap-3">
+      {state.data.map((offer) => (
+        <PileOfferCard key={offer.requestId} offer={offer} onChanged={retry} />
+      ))}
+    </div>
+  );
+}
 
 function AsksContent() {
   const { t } = useLocale();
@@ -48,6 +67,7 @@ export default function MyAsksPage() {
         <Suspense fallback={null}>
           <AddedToOpenAskNote />
         </Suspense>
+        <PileOffers />
         <AsksContent />
       </main>
     </Gate>
