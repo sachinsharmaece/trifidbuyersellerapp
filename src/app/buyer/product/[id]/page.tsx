@@ -9,7 +9,7 @@ import { DevNote } from '../../../../components/dev/DevNote';
 import { RateBlock } from '../../../../components/RateBlock';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
-import { ButtonLink } from '../../../../components/ui/Button';
+import { OfferBuyAction } from '../../../../components/OfferBuyAction';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
 import { useAsyncData } from '../../../../lib/useAsyncData';
@@ -42,9 +42,7 @@ function OffersContent({ productId }: { productId: string }) {
           {data.offers.map((offer) => (
             <Card key={offer.listingLineId}>
               <RateBlock ratePaise={offer.ratePaise} conditions={offer.conditions} />
-              <ButtonLink href={`/buyer/buy/${offer.listingLineId}`} fullWidth className="mt-3">
-                {t('buy_title')}
-              </ButtonLink>
+              <OfferBuyAction listingLineId={offer.listingLineId} closed={offer.closed} />
             </Card>
           ))}
           {/* 29 Oct — a listed product is bought from its offers; an ask is for what is not listed. */}

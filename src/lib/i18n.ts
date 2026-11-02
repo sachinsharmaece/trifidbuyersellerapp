@@ -155,6 +155,10 @@ export const dictionary = {
     'अभी कोई डिलीवरी पता दर्ज नहीं है — सेल्स डेस्क से संपर्क करें।',
   ],
   buy_submit: ['Request this offer', 'यह ऑफ़र माँगें'],
+  offer_closed: [
+    'The seller has already responded to this offer, so it takes no more requests.',
+    'विक्रेता इस ऑफ़र पर पहले ही निर्णय ले चुका है, इसलिए अब नए अनुरोध नहीं लिए जा सकते।',
+  ],
   buy_registered_address: [
     'We will deliver to your registered address.',
     'हम आपके पंजीकृत पते पर डिलीवरी करेंगे।',

@@ -34,6 +34,8 @@ export interface BuyerOfferDto {
   ratePaise: number;
   conditions: ConditionTags;
   hasPool: boolean;
+  /** 2 Nov — the seller has already answered this offer, so it takes no more requests. */
+  closed: 'confirmed' | 'requoted' | 'declined' | null;
 }
 export interface ProductOffersDto {
   offers: BuyerOfferDto[];
@@ -58,6 +60,8 @@ export interface BuyScreenDto {
   moqExact: number;
   availableBoxes: number;
   conditions: ConditionTags;
+  /** 2 Nov — the seller has already answered this offer, so Buy would be refused. */
+  closed: 'confirmed' | 'requoted' | 'declined' | null;
 }
 // API-032.
 export function getListingLineForBuy(
