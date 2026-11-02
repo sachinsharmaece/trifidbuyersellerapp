@@ -59,7 +59,9 @@ function BuyForm({ lineId }: { lineId: string }) {
           <RateBlock ratePaise={line.ratePaise} conditions={line.conditions} />
           {/* 2 Nov — the seller has already answered this offer: say so, with no form to fill in. */}
           {line.closed ? (
-            <Note tone="wait">{t('offer_closed')}</Note>
+            <Note tone="wait">
+              {t(line.closed === 'sold_out' ? 'offer_sold_out' : 'offer_closed')}
+            </Note>
           ) : (
             <>
               <p className="text-sm text-slate-500">{t('buy_moq_hint', { moq: line.moqExact })}</p>

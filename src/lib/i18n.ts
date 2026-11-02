@@ -156,8 +156,17 @@ export const dictionary = {
   ],
   buy_submit: ['Request this offer', 'यह ऑफ़र माँगें'],
   offer_closed: [
-    'The seller has already responded to this offer, so it takes no more requests.',
-    'विक्रेता इस ऑफ़र पर पहले ही निर्णय ले चुका है, इसलिए अब नए अनुरोध नहीं लिए जा सकते।',
+    'This offer is not taking requests right now.',
+    'यह ऑफ़र अभी नए अनुरोध नहीं ले रहा है।',
+  ],
+  offer_sold_out: ['This offer is sold out.', 'यह ऑफ़र बिक चुका है।'],
+  ask_filled_progress: [
+    '{filled} of {total} boxes ordered — still looking for {left}.',
+    '{total} में से {filled} बॉक्स ऑर्डर हो चुके — {left} की तलाश जारी है।',
+  ],
+  quote_keep_looking: [
+    'Keep looking for the other {left} boxes',
+    'बाकी {left} बॉक्स की तलाश जारी रखें',
   ],
   buy_registered_address: [
     'We will deliver to your registered address.',

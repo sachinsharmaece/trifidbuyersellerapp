@@ -32,7 +32,10 @@ export interface MyAskQuote {
 }
 export interface MyAskItem {
   askId: string;
+  /** Boxes still wanted. 2 Nov — a short fill leaves the ask open at what is left. */
   qty: number;
+  /** 2 Nov — boxes already ordered on it. */
+  filledQty: number;
   state: string;
   ttlAt: string;
   holdExpiresAt: string | null;
@@ -45,9 +48,14 @@ export function getMyAsks(accessToken: string): Promise<MyAskItem[]> {
 export function postAcceptFill(
   accessToken: string,
   askId: string,
-  input: { option: 'partial' | 'full'; quoteIds: string[] },
+  input: {
+    option: 'partial' | 'full';
+    quoteIds: string[];
+    /** 2 Nov — when the quotes taken cover fewer boxes than still wanted, keep the rest open. */
+    keepRemainderOpen?: boolean;
+  },
   idempotencyKey: string,
-): Promise<{ soIds: string[] }> {
+): Promise<{ soIds: string[]; filledBoxes: number; remainingBoxes: number }> {
   return apiFetch(`/asks/${askId}/accept`, {
     method: 'POST',
     accessToken,

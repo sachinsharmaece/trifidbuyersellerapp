@@ -22,22 +22,25 @@ describe('An offer the seller has already answered (2 Nov)', () => {
   });
 
   it.each(['confirmed', 'requoted', 'declined'] as const)(
-    'a %s offer says so instead of a button that would be refused',
+    'a %s offer says it is not taking requests, instead of a button that would be refused',
     (closed) => {
       setUp();
       render(<OfferBuyAction listingLineId="l1" closed={closed} />);
-      expect(
-        screen.getByText(
-          'The seller has already responded to this offer, so it takes no more requests.',
-        ),
-      ).toBeInTheDocument();
+      expect(screen.getByText('This offer is not taking requests right now.')).toBeInTheDocument();
       expect(screen.queryByRole('link')).toBeNull();
     },
   );
 
+  it('a sold-out offer says so', () => {
+    setUp();
+    render(<OfferBuyAction listingLineId="l1" closed="sold_out" />);
+    expect(screen.getByText('This offer is sold out.')).toBeInTheDocument();
+    expect(screen.queryByRole('link')).toBeNull();
+  });
+
   it('says it in Hindi too', () => {
     setUp('hi');
     render(<OfferBuyAction listingLineId="l1" closed="confirmed" />);
-    expect(screen.getByText(/विक्रेता इस ऑफ़र पर पहले ही निर्णय ले चुका है/)).toBeInTheDocument();
+    expect(screen.getByText(/यह ऑफ़र अभी नए अनुरोध नहीं ले रहा है/)).toBeInTheDocument();
   });
 });
