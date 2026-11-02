@@ -4,9 +4,8 @@ import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { AddedToOpenAskNote } from '../../../components/AddedToOpenAskNote';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
-import { BuyerNav } from '../../../components/BuyerNav';
 import { DevNote } from '../../../components/dev/DevNote';
 import { Pill } from '../../../components/Pill';
 import { Card } from '../../../components/ui/Card';
@@ -126,11 +125,8 @@ export default function MyAsksPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('my_asks_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('my_asks_title')} backHref={'/buyer'} />
         <DevNote screen="buyer_my_asks" />
         <Link href="/buyer/ask" className="mb-4 inline-block text-sm text-brand-600 underline">
           {t('ask_raise_title')}
@@ -139,7 +135,6 @@ export default function MyAsksPage() {
           <AddedToOpenAskNote />
         </Suspense>
         <AsksContent />
-        <BuyerNav />
       </main>
     </Gate>
   );

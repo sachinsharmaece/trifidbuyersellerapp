@@ -1,17 +1,24 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { IBM_Plex_Sans, Noto_Sans_Devanagari } from 'next/font/google';
 import { Providers } from '../providers/Providers';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+// The prototypes' type (trifid data/buyer.html, supplier.html): IBM Plex for Latin, with
+// Noto Sans Devanagari so हिंदी renders in one designed face rather than the phone's fallback.
+const plexSans = IBM_Plex_Sans({
+  variable: '--font-plex-sans',
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const notoDevanagari = Noto_Sans_Devanagari({
+  variable: '--font-noto-devanagari',
+  subsets: ['devanagari'],
 });
+
+export const viewport: Viewport = {
+  themeColor: '#0b5d3b',
+};
 
 export const metadata: Metadata = {
   title: 'TriFid',
@@ -20,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${plexSans.variable} ${notoDevanagari.variable}`}>
       <body>
         <Providers>{children}</Providers>
       </body>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
-import { LocaleToggle } from '../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../components/AppHeader';
 import { CatalogPicker, type CatalogSelection } from '../../../../components/CatalogPicker';
 import { DevNote } from '../../../../components/dev/DevNote';
 import { Note } from '../../../../components/Note';
@@ -41,11 +41,8 @@ export default function CreateListingPage() {
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('create_listing_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('create_listing_title')} backHref={'/seller'} />
 
         <DevNote screen="seller_create_listing" />
         <Card>

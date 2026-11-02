@@ -1,14 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
-import { SellerNav } from '../../../components/SellerNav';
 import { DevNote } from '../../../components/dev/DevNote';
 import { Pill } from '../../../components/Pill';
 import { Card } from '../../../components/ui/Card';
-import { Button } from '../../../components/ui/Button';
+import { ButtonLink } from '../../../components/ui/Button';
 import { useLocale } from '../../../providers/LocaleProvider';
 import { useSession } from '../../../providers/SessionProvider';
 import { useAsyncData } from '../../../lib/useAsyncData';
@@ -37,9 +35,9 @@ function DemandContent() {
               <div className="mb-3 text-sm text-slate-700">
                 {t('demand_qty_needed', { qty: ask.qty })}
               </div>
-              <Link href={`/seller/quote/${ask.askId}`}>
-                <Button fullWidth>{t('quote_form_title')}</Button>
-              </Link>
+              <ButtonLink href={`/seller/quote/${ask.askId}`} fullWidth>
+                {t('quote_form_title')}
+              </ButtonLink>
             </Card>
           ))}
         </div>
@@ -52,14 +50,10 @@ export default function DemandBoardPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('demand_board_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('demand_board_title')} />
         <DevNote screen="seller_demand" />
         <DemandContent />
-        <SellerNav />
       </main>
     </Gate>
   );

@@ -3,14 +3,13 @@
 import { use } from 'react';
 import Link from 'next/link';
 import { Gate } from '../../../../components/Gate';
-import { LocaleToggle } from '../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../components/AppHeader';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
-import { BuyerNav } from '../../../../components/BuyerNav';
 import { DevNote } from '../../../../components/dev/DevNote';
 import { RateBlock } from '../../../../components/RateBlock';
 import { Note } from '../../../../components/Note';
 import { Card } from '../../../../components/ui/Card';
-import { Button } from '../../../../components/ui/Button';
+import { ButtonLink } from '../../../../components/ui/Button';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
 import { useAsyncData } from '../../../../lib/useAsyncData';
@@ -43,11 +42,9 @@ function OffersContent({ productId }: { productId: string }) {
           {data.offers.map((offer) => (
             <Card key={offer.listingLineId}>
               <RateBlock ratePaise={offer.ratePaise} conditions={offer.conditions} />
-              <Link href={`/buyer/buy/${offer.listingLineId}`}>
-                <Button fullWidth className="mt-3">
-                  {t('buy_title')}
-                </Button>
-              </Link>
+              <ButtonLink href={`/buyer/buy/${offer.listingLineId}`} fullWidth className="mt-3">
+                {t('buy_title')}
+              </ButtonLink>
             </Card>
           ))}
           {/* 29 Oct — a listed product is bought from its offers; an ask is for what is not listed. */}
@@ -68,14 +65,10 @@ export default function ProductOffersPage(props: { params: Promise<{ id: string 
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4 pb-20">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('product_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('product_title')} backHref={'/buyer'} />
         <DevNote screen="buyer_product" />
         <OffersContent productId={id} />
-        <BuyerNav />
       </main>
     </Gate>
   );

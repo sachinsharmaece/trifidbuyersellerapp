@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Gate } from '../../../../../components/Gate';
-import { LocaleToggle } from '../../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../../components/AppHeader';
 import { DevNote } from '../../../../../components/dev/DevNote';
 import { Note } from '../../../../../components/Note';
 import { Card } from '../../../../../components/ui/Card';
@@ -52,11 +52,8 @@ export default function RateChangePage(props: { params: Promise<{ id: string }> 
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('rate_change_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('rate_change_title')} backHref={'/seller/stock'} />
 
         <DevNote screen="seller_rate_change" />
         <Card>

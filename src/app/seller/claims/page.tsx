@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { DevNote } from '../../../components/dev/DevNote';
 import { Note } from '../../../components/Note';
 import { UndoToast } from '../../../components/UndoToast';
@@ -48,11 +48,8 @@ export default function ClaimBoardPage() {
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('claim_board_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('claim_board_title')} backHref={'/seller'} />
 
         <DevNote screen="seller_claims" />
         {!enabled && <Note>{t('nothing_yet')}</Note>}

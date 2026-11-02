@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
-import { LocaleToggle } from '../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../components/AppHeader';
 import { AsyncBoundary } from '../../../../components/AsyncBoundary';
 import { DevNote } from '../../../../components/dev/DevNote';
 import { RateBlock } from '../../../../components/RateBlock';
@@ -121,11 +121,8 @@ export default function BuyPage(props: { params: Promise<{ id: string }> }) {
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('buy_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('buy_title')} backHref={`/buyer/product/${id}`} />
         <DevNote screen="buyer_buy" />
         <BuyForm lineId={id} />
       </main>

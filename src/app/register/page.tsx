@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { FiCheckCircle } from 'react-icons/fi';
 import { useLocale } from '../../providers/LocaleProvider';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { Wordmark } from '../../components/Wordmark';
 import { DevNote } from '../../components/dev/DevNote';
 import { BuyerRegistrationForm } from '../../components/BuyerRegistrationForm';
 import { SellerRegistrationForm } from '../../components/SellerRegistrationForm';
@@ -24,7 +25,8 @@ function RegisterContent() {
 
   if (done) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 p-4">
+        <Wordmark />
         <Card className="w-full max-w-sm text-center">
           <div className="mb-4 flex justify-center">
             <LocaleToggle />
@@ -48,7 +50,8 @@ function RegisterContent() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 p-4">
+      <Wordmark />
       <Card className="w-full max-w-sm text-center">
         <div className="mb-4 flex justify-center">
           <LocaleToggle />

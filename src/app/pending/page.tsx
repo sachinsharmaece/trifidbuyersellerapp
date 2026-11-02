@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '../../providers/SessionProvider';
 import { useLocale } from '../../providers/LocaleProvider';
 import { LocaleToggle } from '../../components/LocaleToggle';
+import { Wordmark } from '../../components/Wordmark';
 import { DevNote } from '../../components/dev/DevNote';
 import { Loader } from '../../components/ui/Loader';
 import { Card } from '../../components/ui/Card';
@@ -44,7 +45,8 @@ export default function PendingPage() {
         : { title: t('pending_title'), body: t('pending_body') };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 p-4">
+      <Wordmark />
       <Card className="w-full max-w-sm text-center">
         <div className="mb-4 flex justify-center">
           <LocaleToggle />

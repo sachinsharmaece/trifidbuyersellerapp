@@ -1,7 +1,7 @@
 'use client';
 
 import { Gate } from '../../../components/Gate';
-import { LocaleToggle } from '../../../components/LocaleToggle';
+import { AppHeader } from '../../../components/AppHeader';
 import { AsyncBoundary } from '../../../components/AsyncBoundary';
 import { Pill } from '../../../components/Pill';
 import { Table, Th, Td } from '../../../components/ui/Table';
@@ -61,11 +61,8 @@ export default function MyQuotesPage() {
   const { t } = useLocale();
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('my_rates_given_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('my_rates_given_title')} backHref={'/seller'} />
         <QuotesContent />
       </main>
     </Gate>

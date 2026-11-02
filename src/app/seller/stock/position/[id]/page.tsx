@@ -2,7 +2,7 @@
 
 import { use } from 'react';
 import { Gate } from '../../../../../components/Gate';
-import { LocaleToggle } from '../../../../../components/LocaleToggle';
+import { AppHeader } from '../../../../../components/AppHeader';
 import { AsyncBoundary } from '../../../../../components/AsyncBoundary';
 import { DevNote } from '../../../../../components/dev/DevNote';
 import { Pill } from '../../../../../components/Pill';
@@ -71,11 +71,8 @@ export default function PositionCardPage(props: { params: Promise<{ id: string }
 
   return (
     <Gate>
-      <main className="mx-auto max-w-lg p-4">
-        <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-slate-900">{t('position_card_title')}</h1>
-          <LocaleToggle />
-        </header>
+      <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
+        <AppHeader title={t('position_card_title')} backHref={'/seller/stock'} />
         <DevNote screen="seller_position" />
         <PositionContent lineId={id} />
       </main>
