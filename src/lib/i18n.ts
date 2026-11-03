@@ -155,6 +155,30 @@ export const dictionary = {
     'अभी कोई डिलीवरी पता दर्ज नहीं है — सेल्स डेस्क से संपर्क करें।',
   ],
   buy_submit: ['Request this offer', 'यह ऑफ़र माँगें'],
+  offer_closed: [
+    'This offer is not taking requests right now.',
+    'यह ऑफ़र अभी नए अनुरोध नहीं ले रहा है।',
+  ],
+  offer_sold_out: ['This offer is sold out.', 'यह ऑफ़र बिक चुका है।'],
+  ask_filled_progress: [
+    '{filled} of {total} boxes ordered — still looking for {left}.',
+    '{total} में से {filled} बॉक्स ऑर्डर हो चुके — {left} की तलाश जारी है।',
+  ],
+  pile_offer_title: ['The seller confirmed — your deal', 'विक्रेता ने पुष्टि की — आपका सौदा'],
+  pile_offer_hold: ['Yours until {until}', '{until} तक आपके लिए सुरक्षित'],
+  pile_offer_expiry: ['Expiry: {expiry}', 'एक्सपायरी: {expiry}'],
+  pile_offer_short: [
+    'You asked for {asked}; the seller can send {boxes}.',
+    'आपने {asked} बॉक्स मांगे थे; विक्रेता {boxes} भेज सकता है।',
+  ],
+  pile_offer_take_note: [
+    'Confirm to place your order. Your payment window starts then.',
+    'ऑर्डर देने के लिए पक्का करें। भुगतान की अवधि तभी शुरू होगी।',
+  ],
+  quote_keep_looking: [
+    'Keep looking for the other {left} boxes',
+    'बाकी {left} बॉक्स की तलाश जारी रखें',
+  ],
   buy_registered_address: [
     'We will deliver to your registered address.',
     'हम आपके पंजीकृत पते पर डिलीवरी करेंगे।',

@@ -57,58 +57,67 @@ function BuyForm({ lineId }: { lineId: string }) {
       {([line, locations]) => (
         <div className="flex flex-col gap-4">
           <RateBlock ratePaise={line.ratePaise} conditions={line.conditions} />
-          <p className="text-sm text-slate-500">{t('buy_moq_hint', { moq: line.moqExact })}</p>
-
-          <Input
-            label={t('buy_qty_label')}
-            type="number"
-            min={line.moqExact}
-            value={qty}
-            onChange={(e) => setQty(e.target.value)}
-          />
-
-          {locations.length === 0 ? (
-            <Note>{t('buy_registered_address')}</Note>
+          {/* 2 Nov — the seller has already answered this offer: say so, with no form to fill in. */}
+          {line.closed ? (
+            <Note tone="wait">
+              {t(line.closed === 'sold_out' ? 'offer_sold_out' : 'offer_closed')}
+            </Note>
           ) : (
-            <Select
-              label={t('buy_delivery_location')}
-              value={locationId}
-              onChange={(e) => setLocationId(e.target.value)}
-            >
-              <option value="">{t('buy_primary_location')}</option>
-              {locations.map((loc) => (
-                <option key={loc.locationId} value={loc.locationId}>
-                  {loc.label}
-                </option>
-              ))}
-            </Select>
+            <>
+              <p className="text-sm text-slate-500">{t('buy_moq_hint', { moq: line.moqExact })}</p>
+
+              <Input
+                label={t('buy_qty_label')}
+                type="number"
+                min={line.moqExact}
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
+              />
+
+              {locations.length === 0 ? (
+                <Note>{t('buy_registered_address')}</Note>
+              ) : (
+                <Select
+                  label={t('buy_delivery_location')}
+                  value={locationId}
+                  onChange={(e) => setLocationId(e.target.value)}
+                >
+                  <option value="">{t('buy_primary_location')}</option>
+                  {locations.map((loc) => (
+                    <option key={loc.locationId} value={loc.locationId}>
+                      {loc.label}
+                    </option>
+                  ))}
+                </Select>
+              )}
+
+              {error && <Note tone="urgent">{error}</Note>}
+
+              <GestureConfirmButton
+                label={t('buy_submit')}
+                onConfirm={() => {
+                  const qtyNum = Number(qty);
+                  if (!qtyNum || qtyNum < line.moqExact) {
+                    setError(t('buy_below_moq'));
+                    return;
+                  }
+                  setError(null);
+                  callApi((token) =>
+                    postInquire(
+                      token,
+                      lineId,
+                      { qty: qtyNum, ...(locationId ? { deliveryLocationId: locationId } : {}) },
+                      newIdempotencyKey(),
+                    ),
+                  )
+                    .then(() => setDone(true))
+                    .catch((err: unknown) => {
+                      setError(err instanceof ApiError ? err.message : 'Something went wrong.');
+                    });
+                }}
+              />
+            </>
           )}
-
-          {error && <Note tone="urgent">{error}</Note>}
-
-          <GestureConfirmButton
-            label={t('buy_submit')}
-            onConfirm={() => {
-              const qtyNum = Number(qty);
-              if (!qtyNum || qtyNum < line.moqExact) {
-                setError(t('buy_below_moq'));
-                return;
-              }
-              setError(null);
-              callApi((token) =>
-                postInquire(
-                  token,
-                  lineId,
-                  { qty: qtyNum, ...(locationId ? { deliveryLocationId: locationId } : {}) },
-                  newIdempotencyKey(),
-                ),
-              )
-                .then(() => setDone(true))
-                .catch((err: unknown) => {
-                  setError(err instanceof ApiError ? err.message : 'Something went wrong.');
-                });
-            }}
-          />
         </div>
       )}
     </AsyncBoundary>
