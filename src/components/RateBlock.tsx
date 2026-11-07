@@ -6,7 +6,7 @@ import { ConditionChips, type ConditionSet } from './ConditionChips';
 
 /**
  * The one place a rate renders — always a buyer-facing rate (DEC-045: the
- * buyer's rate is tax-inclusive, unlike a seller's own net rate). `conditions`
+ * buyer's rate is tax-inclusive, never a seller's own rate). `conditions`
  * is required and non-nullable — IC-04's correction: a rate never appears
  * without its condition-set chips, so nothing on screen can be mistaken for a
  * plain, comparable price.
