@@ -336,7 +336,7 @@ export const dictionary = {
   listing_scope_all_india: ['All India', 'पूरे भारत में'],
   listing_scope_all_except_mine: ['Everywhere except my area', 'मेरे क्षेत्र को छोड़कर हर जगह'],
   listing_scope_custom: ['Choose specific tehsils', 'खास तहसीलें चुनें'],
-  listing_rate_label: ['Your net rate', 'आपकी शुद्ध दर'],
+  listing_rate_label: ['Your rate', 'आपकी दर'],
   listing_qty_label: ['Boxes available', 'उपलब्ध बॉक्स'],
   listing_moq_label: ['Minimum order quantity', 'न्यूनतम ऑर्डर मात्रा'],
   listing_moq_hint: [
@@ -422,12 +422,12 @@ export const dictionary = {
   ],
 
   // ---------------------------------------------------------------------
-  // DEC-045 — rate basis labels. Buyer rates are GST-inclusive; seller
-  // rates are taxable (GST extra). Shown wherever a rate renders or is
-  // entered, so a dealer never has to guess which basis he is looking at.
+  // DEC-045, DEC-077 — rate basis labels. Buyer rates and seller rates are
+  // both GST-inclusive. Shown wherever a rate renders or is entered, so a
+  // dealer never has to guess which basis he is looking at.
   // ---------------------------------------------------------------------
   rate_includes_gst: ['Includes GST', 'जीएसटी शामिल'],
-  rate_excludes_gst: ['Excludes GST — your net rate', 'जीएसटी छोड़कर — आपकी शुद्ध दर'],
+  rate_seller_includes_gst: ['Includes GST — your rate', 'जीएसटी सहित — आपकी दर'],
   // Every rate is entered in rupees, converted to paise before it is sent —
   // the field never asks for paise directly, so this pairs with a live
   // preview of the parsed amount rather than a bare unit label.

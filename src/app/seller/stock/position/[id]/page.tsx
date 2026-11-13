@@ -55,7 +55,7 @@ function PositionContent({ lineId }: { lineId: string }) {
                   {formatRupees(card.band.lowPaise)} – {formatRupees(card.band.highPaise)} (
                   {card.band.listingCount})
                 </p>
-                <p className="text-xs text-slate-400">{t('rate_excludes_gst')}</p>
+                <p className="text-xs text-slate-400">{t('rate_seller_includes_gst')}</p>
               </>
             )}
           </Card>

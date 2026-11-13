@@ -63,8 +63,8 @@ export default function RateChangePage(props: { params: Promise<{ id: string }> 
                 label={t('rate_change_new_rate')}
                 hint={
                   parsedRatePaise !== null && !Number.isNaN(parsedRatePaise) && parsedRatePaise > 0
-                    ? `${t('rate_excludes_gst')} — ${t('rate_preview_saves_as')} ₹${(parsedRatePaise / 100).toFixed(2)}`
-                    : `${t('rate_excludes_gst')} — ${t('rate_hint_rupees')}`
+                    ? `${t('rate_seller_includes_gst')} — ${t('rate_preview_saves_as')} ₹${(parsedRatePaise / 100).toFixed(2)}`
+                    : `${t('rate_seller_includes_gst')} — ${t('rate_hint_rupees')}`
                 }
                 type="number"
                 step="0.01"
