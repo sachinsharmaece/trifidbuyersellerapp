@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { Gate } from '../../../../components/Gate';
@@ -12,7 +12,8 @@ import { Input, Select } from '../../../../components/ui/Input';
 import { Button } from '../../../../components/ui/Button';
 import { useLocale } from '../../../../providers/LocaleProvider';
 import { useSession } from '../../../../providers/SessionProvider';
-import { postQuote, type PostQuoteInput } from '../../../../lib/demandApi';
+import { getDemandBoard, postQuote, type PostQuoteInput } from '../../../../lib/demandApi';
+import { getSkus, type SkuOption } from '../../../../lib/catalogApi';
 import { ApiError } from '../../../../lib/apiErrors';
 
 export default function QuoteFormPage(props: { params: Promise<{ askId: string }> }) {
@@ -36,6 +37,20 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  // An ask for a whole product (not one pack) needs the seller to say which pack he is quoting.
+  const [packs, setPacks] = useState<SkuOption[]>([]);
+  const [packId, setPackId] = useState('');
+  useEffect(() => {
+    callApi((token) => getDemandBoard(token))
+      .then(async (board) => {
+        const ask = board.find((item) => item.askId === askId);
+        if (!ask || ask.skuId || !ask.productId) return;
+        const productId = ask.productId;
+        setPacks(await callApi((token) => getSkus(token, productId)));
+      })
+      .catch(() => setPacks([]));
+  }, [askId, callApi]);
+
   return (
     <Gate>
       <main className="mx-auto max-w-lg p-4 md:max-w-2xl">
@@ -44,6 +59,22 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
         <DevNote screen="seller_quote" />
         <Card>
           <div className="flex flex-col gap-4">
+            {packs.length > 0 && (
+              <Select
+                label={t('quote_pack')}
+                value={packId}
+                onChange={(e) => setPackId(e.target.value)}
+              >
+                <option value="" disabled>
+                  {t('quote_pack_pick')}
+                </option>
+                {packs.map((p) => (
+                  <option key={p.skuId} value={p.skuId}>
+                    {p.packLabel}
+                  </option>
+                ))}
+              </Select>
+            )}
             <Input
               label={t('quote_rate_label')}
               hint={
@@ -125,6 +156,10 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
                   setError(t('listing_batch_required'));
                   return;
                 }
+                if (packs.length > 0 && !packId) {
+                  setError(t('quote_pack_pick'));
+                  return;
+                }
                 setSubmitting(true);
                 setError(null);
                 const input: PostQuoteInput = {
@@ -136,6 +171,7 @@ export default function QuoteFormPage(props: { params: Promise<{ askId: string }
                   provenance,
                   batch: provenance === 'auth' ? batch : undefined,
                   daysToIndore: days,
+                  ...(packs.length > 0 ? { skuId: packId } : {}),
                 };
                 callApi((token) => postQuote(token, askId, input))
                   .then(() => router.push('/seller/quotes'))
